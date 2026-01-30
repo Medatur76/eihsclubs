@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Animation Test | Coding Club</title>
+        <style>
+            body {
+                background: #000;
+            }
+            canvas {
+                display: block;
+                height: 100%;
+                left: 0;
+                margin: 0;
+                padding: 0;
+                position: absolute;
+                top: 0;
+                width: 100%
+            }
+        </style>
+    </head>
+    <body>
+        <script>
+            const ctx = document.body.appendChild(document.createElement("canvas")).getContext("2d");
+
+            let start;
+
+            let orbs = [{dist: .25, angle: 0}, {dist: .3, angle: 0}, {dist: .35, angle: 0}];
+
+            function step(timestamp) {
+                if (start == undefined) start = timestamp;
+                const runtime = timestamp - start;
+  
+                for (let orb of orbs) {
+                    
+                }
+  
+                requestAnimationFrame(step);
+            }
+
+            requestAnimationFrame(step);
+        </script>
+    </body>
+</html>

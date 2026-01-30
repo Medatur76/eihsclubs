@@ -1,0 +1,304 @@
+* {
+    text-transform: uppercase;
+}
+
+body {
+    background-image: url("img/uri_ifs___M_KZm-ZfQyg27EALqmA8-r3T9BMD9HX2SrlXPRGw409W4.webp");
+    color: white;
+    margin: 0;
+    font-family: "Roboto", sans-serif, auto;
+    font-optical-sizing: auto;
+    font-style: normal;
+    font-variation-settings: "wdth" 100;
+    height: 100vh;
+    width: 100vw;
+    top: 0;
+}
+
+div.scroll_container {
+    top: 0;
+    height: 100%;
+    width: 100%;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+    overflow-x: hidden;
+}
+
+div.scroll_container section {
+    top: 0;
+    height: 100%;
+    width: 100%;
+    scroll-snap-align: start;
+    position: relative;
+    overflow: hidden;
+}
+
+div.right {
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    left: 50vw;
+    right: 0;
+    text-align: right;
+}
+
+.main {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 85vh;
+    width: 85vh;
+}
+
+div.left {
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    right: 50vw;
+    left: 0;
+    text-align: left;
+}
+
+div.text {
+    background-color: rgba(180, 200, 255, 0.25);
+    text-align: center;
+}
+
+div.island {
+    position: absolute;
+    --margin-top: 7vh;
+    --margin-side: 6.7vw;
+    background-color: rgba(180, 200, 255, 0.25);
+    margin: var(--margin-top) var(--margin-side) var(--margin-top) calc(var(--margin-side) + 9vw);
+    padding-top: calc(var(--margin-top) / 4);
+    --height: calc(100vh - calc(var(--margin-top) * 2.25));
+    height: var(--height);
+    max-height: var(--height);
+    min-height: var(--height);
+    width: calc(48vw - 2 * var(--margin-side));
+    right: 0;
+    overflow-y: hidden;
+}
+
+div.island > #title {
+    font-weight: 1000;
+    font-size: 3vw;
+    letter-spacing: 0.25vw;
+    margin: 0.875vh 0 0 0;
+}
+
+div.island > #subtitle {
+    font-weight: 400;
+    font-size: 1.2vw;
+    letter-spacing: 0.2vw;
+    margin: 1vh 0 0 0;
+}
+
+div#buttons {
+    padding: 0 5%;
+    margin: 1vh 0 0 0;
+}
+
+div#buttons a svg {
+    padding-top: 5%;
+    text-decoration: none;
+    color: rgb(255, 255, 255);
+    margin: 3vh 0 0 0;
+    font-weight: 420;
+    width: 100%;
+    height: auto;
+}
+
+div#buttons a:first-child svg {
+    padding-top: 2%;
+}
+
+div#socials a * {
+    height: 5vh;
+    margin: 7vh 4vh 0 4vh;
+}
+
+div#socials a {
+    color: transparent;
+}
+
+div.article_buttons {
+    background-color: rgba(180, 200, 255, 0.25);
+}
+
+div.article_buttons a svg {
+    margin-top: 11%;
+}
+
+div.article_buttons a:first-child svg {
+    margin-top: 5%;
+    scale: 110%;
+}
+
+div.post_container {
+    position: absolute;
+    right: 16vh;
+    top: 8.25vh;
+    width: 60vh;
+    height: 85vh;
+    background-color: rgba(89, 115, 185, 0.719);
+    padding: 1vw;
+    display: flex;
+    align-items: center;
+}
+
+div.post_container > img {
+    width: 100%;
+}
+
+div.about {
+    text-align: center;
+    overflow-y: hidden;
+}
+
+div.about > #title {
+    font-weight: 500;
+    font-size: 4.5vw;
+    word-spacing: 0.5vw;
+    letter-spacing: 0.2vw;
+    margin-top: 5vh;
+    margin-bottom: 0;
+}
+
+div.overview {
+    background-color: #4370b6;
+}
+
+div.overview div {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.75);
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+
+section#join div.left {
+    text-align: center;
+}
+
+section#join div.left div#title, section#join div.right h3, section#contact div.right div#title, section#sources div.left h1, section#donate div.right h1 {
+    text-decoration: underline;
+    font-size: 3vw;
+    letter-spacing: 0.125vw;
+}
+
+section#join div.left div#title {
+    margin-top: 4vh;
+    margin-bottom: 1vh;
+}
+
+section#join div.right h5 {
+    font-size: 1vw;
+}
+
+div.horizontal {
+    display: flex;
+    justify-content: center;
+}
+
+div.horizontal div {
+    margin-bottom: 1vh;
+}
+
+div.horizontal div:first-child {
+    margin-right: 1vh;
+}
+
+img.stair_photo {
+    width: calc(36vw + 1vh);
+    position: relative;
+    bottom: 5vw;
+}
+
+section#join div.right a svg {
+    margin-top: 14vh;
+}
+
+section#contact div.right div#title {
+    position: absolute;
+    right: 10vw;
+}
+
+div.top div, div.bottom div {
+    display: inline-block;
+}
+
+div.top, div.bottom {
+    width: 100%;
+}
+
+div.bottom {
+    bottom: 0;
+}
+
+div.mugshot {
+    text-align: center;
+    position: absolute;
+}
+
+div.mugshot h3 {
+    font-size: 1.5vw;
+}
+
+div.mugshot h4 {
+    font-size: 1vw;
+}
+
+section#team > h1 {
+    font-size: 4vw;
+    padding-top: 3vh;
+    margin-left: 5vw;
+}
+
+div.mugshot .photo {
+    position: relative;
+    width: 30vw;
+    height: 30vw;
+    overflow: hidden;
+    clip-path: url(#mugshot);
+}
+
+div.mugshot div.photo img {
+    width: calc(calc(1066 / 1363) * 100vw);
+}
+
+div.top div.mugshot {
+    top: -10vh;
+}
+
+div.bottom div.mugshot {
+    top: 30vh;
+}
+
+div.top div.mugshot .photo {
+    top: 15vh;
+}
+
+section#sources div.left h1 {
+    position: absolute;
+    left: 10vw;
+}
+
+section#sources div.right.text {
+    font-size: 2.5vw;
+}
+
+section#donate div.right {
+    text-align: center;
+}
+
+div.funky_img {
+    --size: 40em;
+    height: var(--size);
+    width: var(--size);
+    clip-path:url(#bruhhh);
+    position: absolute;
+}

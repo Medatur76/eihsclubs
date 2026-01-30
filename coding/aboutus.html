@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>About Us | Coding Club</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Silkscreen&display=swap" rel="stylesheet">
+        <link href='https://fonts.googleapis.com/css?family=Material Symbols Rounded' rel='stylesheet'>
+        <style>
+            body {
+                --text_color: 0, 179, 9;
+                color: rgb(var(--text_color));
+                background-color: black;
+                font-family: "Silkscreen", sans-serif;
+                width: 100%;
+                height: 100%;
+                overflow: hidden;
+            }
+            @keyframes flash {
+                0% {
+                    background-color: rgb(117, 182, 120);
+                    color: rgba(var(--text_color), 0);
+                }
+                30% {
+                    background-color: rgba(52, 179, 58, 0.4);
+                    color: rgba(var(--text_color), .4);
+                }
+                100% {
+                    background-color: rgb(1, 129, 8, 0);
+                    color: rgb(var(--text_color));
+                }
+            }
+            .material_icons {
+                font-family: 'Material Symbols Rounded', sans-serif;
+                font-size: 30px;
+            }
+            div.window_buttons {
+                position: absolute;
+                right: 0;
+                top: 0;
+            }
+            div.textContainer {
+                --text_color: 0, 100, 5;
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                color: rgb(0, 100, 5);
+                overflow-y: scroll;
+                padding-right: 17px; /* Increase/decrease this value for cross-browser compatibility */
+                box-sizing: content-box;
+            }
+            div.window {
+                background-color: inherit;
+                padding-top: 36px;
+                top: 10%;
+                right: 15%;
+                width: 50%;
+                height: 55%;
+                position: absolute;
+                padding-right: 17px; /* Increase/decrease this value for cross-browser compatibility */
+                box-sizing: content-box;
+                border: 2px solid rgb(0, 172, 9);
+            }
+
+            canvas.canvasWindow {
+                width: 100%;
+                height: 100%;
+            }
+        </style>
+    </head>
+    <body>
+        <script defer id="main">
+            function delay(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+
+            async function typeLine(element, text, speed=25) {
+                for(let char of text) {
+                    await delay(speed);
+                    const container = element.appendChild(document.createElement("span"));
+                    container.style = "animation: flash 0.5s ease-out;";
+                    container.textContent = char;
+                }
+                element.appendChild(document.createElement("br"));
+            }
+
+            /**
+             * @param context {CanvasRenderingContext2D}
+             */
+            function canvasAnimation(callback, context) {
+                let start;
+
+                function render(timestamp) {
+                    //Timing system needs to be revised for people who tab out and come back possibly idk man
+
+                    if (start == undefined) start = timestamp;
+
+                    const elapsed = timestamp - start;
+
+                    requestAnimationFrame(render);
+                }
+
+                requestAnimationFrame(render);
+            }
+
+            async function pageAnimation() {
+                const textContainer = document.body.appendChild(document.createElement("div")), canvasWindowContainer = document.body.appendChild(document.createElement("div")), canvasWindow = canvasWindowContainer.appendChild(document.createElement("canvas")), canvasWindowContext = canvasWindow.getContext("2d"), commandLine = textContainer.appendChild(document.createElement("span")), cursor = textContainer.appendChild(document.createElement("span"));
+                textContainer.classList = "textContainer";
+                canvasWindowContainer.classList = "window";
+                canvasWindowContainer.style = "display: none;";
+                canvasWindow.classList = "canvasWindow";
+                commandLine.textContent = "> ";
+                commandLine.style = "--text_color: 0, 179, 9;";
+                cursor.style = "background-color: rgb(117, 182, 120);";
+                cursor.textContent = '\u00a0';
+
+                await delay(2000);
+                for (let char of "browser.bat tell {user} about ehis_coding_club") {
+                    const charContainer = commandLine.appendChild(document.createElement("span"));
+                    charContainer.style = "animation: flash 0.5s ease-out;";
+                    charContainer.textContent = char;
+                    await delay(100);
+                }
+
+                await delay(500);
+                commandLine.innerHTML = "> browser.bat tell {user} about ehis_coding_club";
+                textContainer.insertBefore(document.createElement("br"), cursor);
+
+                await delay(1500);
+                cursor.remove();
+
+                await typeLine(textContainer.appendChild(document.createElement("span")), "The EIHS Coding club is a club devoted to cultivating skills and a community around coding.");
+                await delay(1000);
+                await typeLine(textContainer.appendChild(document.createElement("span")), "We achieve this by making a space were once weekly, members meet up after school to share creations, ideas, and knowledge");
+                await typeLine(textContainer.appendChild(document.createElement("span")), "by showing projects on sources like github and teaching in mini lessions.");
+                
+                const commandLine2 = textContainer.appendChild(document.createElement("span"));
+                textContainer.appendChild(cursor);
+                commandLine2.textContent = "> ";
+                commandLine2.style = "--text_color: 0, 179, 9;";
+
+                await delay(2000);
+                for (let char of "browser.bat tell {user} what_is_learned ehis_coding_club im gonna change this later ths command sucks lol") {
+                    const charContainer = commandLine2.appendChild(document.createElement("span"));
+                    charContainer.style = "animation: flash 0.5s ease-out;";
+                    charContainer.textContent = char;
+                    await delay(100);
+                }
+                
+                commandLine2.appendChild(document.createElement("br"));
+
+                await delay(500);
+
+                const buttons = canvasWindowContainer.appendChild(document.createElement("div")), mini = buttons.appendChild(document.createElement("span")), full = buttons.appendChild(document.createElement("span")), close = buttons.appendChild(document.createElement("span"));
+                buttons.classList = "material_icons window_buttons";
+                mini.textContent = "remove";
+                full.textContent = "check_box_outline_blank";
+                close.textContent = "close";
+
+                canvasWindowContainer.removeAttribute("style");
+
+                canvasAnimation(null, canvasWindowContext);
+            }
+
+            pageAnimation();
+        </script>
+    </body>
+</html>

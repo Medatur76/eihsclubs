@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Energy Institute Clubs | Under Construction</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@800&display=swap" rel="stylesheet">
+        <style>
+            canvas {
+                position: absolute;
+                top: 0;
+                left: 0;
+            }
+        </style>
+    </head>
+    <body>
+        <script defer>
+            const canvas = document.body.appendChild(document.createElement("canvas")), ctx = canvas.getContext("2d");
+
+            function draw() {
+                canvas.height = window.innerHeight;
+                canvas.width = window.innerWidth;
+
+                // Optional: Set font size and style
+                ctx.font = `${canvas.height / 10}px Open Sans`;
+
+                // Set horizontal alignment to center
+                ctx.textAlign = 'center';
+
+                // Set vertical alignment to middle
+                ctx.textBaseline = 'middle';
+
+                ctx.fillStyle = "rgb(0,0,0);";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                ctx.fillStyle = "#ffc400";
+
+                ctx.translate(canvas.width / 2, canvas.height / 2);
+
+                ctx.rotate(-30 * Math.PI / 180);
+
+                ctx.fillText("Under Construction", 0, 0);
+
+                ctx.rotate(30 * Math.PI / 180);
+
+                ctx.translate(-canvas.width / 2, -canvas.height / 2);
+
+                const width = canvas.width / 10;
+
+                requestAnimationFrame(draw);
+            }
+
+            requestAnimationFrame(draw);
+        </script>
+    </body>
+</html>

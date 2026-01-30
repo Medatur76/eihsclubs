@@ -1,0 +1,403 @@
+<!--I gotta get paid or somethin because streamlit -> vanilla HTML is hard brooo-->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>VEX Robotics Club</title>
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2284%22>🤖</text></svg>">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@700&display=swap" rel="stylesheet">
+        <link href='https://fonts.googleapis.com/css?family=Material Symbols Rounded' rel='stylesheet'>
+        <style>
+            @keyframes collapse {
+                from
+                {
+                    left: 0px;
+                }
+                to
+                {
+                    left: -256px;
+                }
+            }
+            @keyframes slide {
+                from
+                {
+                    left: 200px;
+                }
+                to
+                {
+                    left: 45px;
+                }
+            }
+            @keyframes spin180 {
+                from
+                {
+                    transform: rotateZ(0deg);
+                }
+                to
+                {
+                    transform: rotateZ(180deg);
+                }
+            }
+            @keyframes spin360 {
+                from
+                {
+                    transform: rotateZ(180deg);
+                }
+                to
+                {
+                    transform: rotateZ(360deg);
+                }
+            }
+            body {
+                color: #fff;
+                font-family: "Source Sans", sans-serif;
+                background-color: rgb(14, 17, 23);
+                text-size-adjust: 100%;
+                display: flex;
+                flex-direction: row;
+                -webkit-box-pack: start;
+                place-content: flex-start;
+                -webkit-box-align: stretch;
+                align-items: stretch;
+                position: absolute;
+                inset: 0px;
+                overflow: hidden;
+                line-height: 1.6;
+                margin: 0;
+            }
+            h1.title {
+                font-size: 2.75rem;
+                font-weight: 700;
+                margin: 0px;
+                padding: 1.25rem 0px 1rem;
+                line-height: 1.2;
+            }
+            h2.subtitle {
+                font-size: 2.25rem;
+                font-weight: 600;
+                padding: 1rem 0px;
+                margin: 0px;
+            }
+            p {
+                font-weight: 400;
+            }
+            section.sidebar {
+                position: relative;
+                height: 100%;
+                width: 256px;
+            }
+
+            div.collapse_button {
+                position: absolute;
+                z-index: 2;
+                left: 200px;
+                top: 30px;
+            }
+            div.collapse_button > button {
+                background-color: rgba(0, 0, 0, 0);
+                border: none;
+            }
+            div.collapse_button > button:hover {
+                background-color: rgba(203, 203, 203, 0.25);
+                border-radius: 7px;
+            }
+            div.header {
+                height: 50px;
+            }
+            div.sidebar {
+                position: absolute;
+                user-select: auto;
+                width: 256px;
+                height: 100%;
+                box-sizing: border-box;
+                flex-shrink: 0;
+                background-color: rgb(38, 39, 48);
+                top: 0;
+                left: 0;
+                z-index: 1;
+                padding: 40px;
+            }
+            .page_container {
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+                overflow: auto;
+                -webkit-box-align: center;
+                align-items: center;
+                height: 100dvh;
+                margin: 8px;
+            }
+            .content {
+                padding: 6rem 1rem 10rem;
+                width: 100%;
+                max-width: 736px;
+            }
+            div.page_radio_container.page_radio_0 p {
+                margin-bottom: 16px;
+            }
+            div.page_radio_container div {
+                width: 100%;
+                max-width: 100%;
+                min-width: 1rem;
+            }
+            span.material_icon {
+                font-family: 'Material Symbols Rounded', sans-serif;
+                transform-origin: center center; /* Sets the rotation origin to the center of the span (default) */
+                font-size: 25px;
+                color: rgb(169, 169, 169);
+            }
+            div.page_radio_container.hidden, span.material_icon.show_hover {
+                display: none;
+            }
+            section.sidebar:hover span.material_icon, span.material_icon.show {
+                display: inline-block; /* Essential for transform to work on a span */
+            }
+            input[type="radio"] {
+                accent-color: red;
+                /*appearance: none;*/
+            }
+            table {
+                border: 1px solid rgba(250, 250, 250, 0.1);
+                border-radius: 0.5rem;
+                border-spacing: 0px;
+                width: 100%;
+                border-collapse: separate;
+                text-align: left;
+            }
+            td, th {
+                border-bottom: 1px solid rgba(250, 250, 250, 0.1);
+                border-right: 1px solid rgba(250, 250, 250, 0.1); 
+            }
+            th {
+                color: rgb(169, 169, 169);
+                padding: 0.25rem 0.375rem 0.25rem 0.5rem;
+            }
+            td {
+                padding: 0.25rem 0.375rem;
+            }
+            td:last-child, th:last-child {
+                border-right: none;
+            }
+            tbody tr:last-child * {
+                border-bottom: none;
+            }
+        </style>
+    </head>
+    <body>
+        <noscript>This website requires the use of JavaScript code. Please enable it and refresh</noscript>
+        <section class="sidebar">
+            <div class="collapse_button">
+                <button class="material_icon_button" aria-label="">
+                    <span translate="no" class="material_icon show_hover">
+                        keyboard_double_arrow_left
+                    </span>
+                </button>
+            </div>
+            <div class="sidebar">
+                <div class="header"></div>
+                <svg role="img" width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g>
+                        <circle cx="12" cy="12" r="5" stroke="#4caf50" stroke-width="2" fill="white"/>
+                        <path d="M12 7V4.5 M12 17V19.5 M7 12H4.5 M17 12H19.5 M8.818 15.17L6.694 17.305M8.818 8.818L6.689 6.689M15.17 8.818L17.305 6.694M15.17 15.17L17.3 17.3" stroke="#4caf50" stroke-width="2"/>
+                    </g>
+                </svg>
+                <h2>Navigate</h2>
+                <div id="sidebar_buttons_container">
+                    <div>
+                        <input name="sidebar_option" id="about" type="radio" value="0" checked>
+                        <label for="about">About</label>
+                    </div>
+                    <div>
+                        <input name="sidebar_option" id="teams" type="radio" value="1">
+                        <label for="teams">Teams</label>
+                    </div>
+                    <div>
+                        <input name="sidebar_option" id="schedule" type="radio" value="2">
+                        <label for="schedule">Schedule</label>
+                    </div>
+                </div>
+                <svg role="img" width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g>
+                        <circle cx="12" cy="12" r="5" stroke="#ff9800" stroke-width="2" fill="white"/>
+                        <path d="M12 7V4.5 M12 17V19.5 M7 12H4.5 M17 12H19.5 M8.818 15.17L6.694 17.305M8.818 8.818L6.689 6.689M15.17 8.818L17.305 6.694M15.17 15.17L17.3 17.3" stroke="#ff9800" stroke-width="2"/>
+                    </g>
+                </svg>
+            </div>
+        </section>
+        <section class="page_container">
+            <div class="content">
+                <div class="title_container" style="text-align: center;">
+                    <svg role="img" width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g>
+                            <circle cx="12" cy="12" r="5" stroke="#ff9800" stroke-width="2" fill="white"/>
+                            <path d="M12 7V4.5 M12 17V19.5 M7 12H4.5 M17 12H19.5 M8.818 15.17L6.694 17.305M8.818 8.818L6.689 6.689M15.17 8.818L17.305 6.694M15.17 15.17L17.3 17.3" stroke="#ff9800" stroke-width="2"/>
+                        </g>
+                    </svg>
+                    <h1 class="title">
+                        <svg style="position: relative; top: 7px;" role="img" width="180" height="72" viewBox="-.5 -1 11.5 5" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M6.828 1.526c-.051.006-.032.068-.015.07l1.3.881-1.405.945c-.037.022-.026.071.009.074h.826c.009-.001.022-.009.03-.016l.999-.689.987.689c.013.01.024.016.039.016h.805c.026-.002.056-.047.013-.071L9.014 2.478l1.305-.882c.027-.021.027-.069-.02-.071H9.502c-.011 0-.02.001-.026.005l-.908.635-.913-.631c-.006-.004-.016-.01-.025-.009ZM2.305 3.474c-.005.006-.016.013-.029.013H1.613c-.011-.001-.02-.006-.028-.015L.03 1.583C.01 1.56.026 1.524.058 1.521H.739c.012.001.02.006.027.013L1.9481 3.0065 3.151 1.536c.007-.009.021-.016.032-.015h.67c.033.004.052.027.032.06Z" fill="#a3a3a3" />
+                            <path d="M4.226 1.482c-.185-.366-.119-1.25.359-1.289H6.264c.239.04.193.525.004.532H4.61c-.223.009-.217.506-.011.532H6.272c.2.047.213.476 0 .533H4.601c-.103.005-.15.148-.156.244-.007.091.026.277.156.285H6.267c.229.039.196.526.003.537H4.582c-.428-.047-.593-.866-.332-1.326Z" fill="#e01414" />
+                        </svg>
+                        Robotics Club
+                    </h1>
+                    <svg role="img" width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g>
+                            <circle cx="12" cy="12" r="5" stroke="#4caf50" stroke-width="2" fill="white"/>
+                            <path d="M12 7V4.5 M12 17V19.5 M7 12H4.5 M17 12H19.5 M8.818 15.17L6.694 17.305M8.818 8.818L6.689 6.689M15.17 8.818L17.305 6.694M15.17 15.17L17.3 17.3" stroke="#4caf50" stroke-width="2"/>
+                        </g>
+                    </svg>
+                </div>
+                <div class="page_radio_container visible page_radio_0">
+                    <h2 class="subtitle">About Us</h2>
+                    <svg version="1.1" role="img" xmlns="http://www.w3.org/2000/svg" viewbox="0 5 20 15" width="600" height="300">
+                        <path d="M19.936 8.089 16.46 7.929H8.333L8.001 7.49 7.34 7.719C7.247 7.564 6.882 7.201 6.791 7.145L6.994 6.475 6.307 6.071 5.815 6.594C5.622 6.498 5.24 6.395 5.045 6.391L4.904 5.695H4.07L3.94 6.359C3.696 6.4 3.377 6.482 3.155 6.591L2.689 6.066 1.982 6.474 2.199 7.129C2.071 7.184 1.702 7.567 1.626 7.68L2.186 8.061C3.438 6.662 5.608 6.6 6.874 8.195H16.317ZM6.364 8.188C5.479 7.299 3.855 6.903 2.541 8.255L2.436 8.215C3.602 6.907 5.579 7.044 6.512 8.189ZM19.921 11.949 15.799 11.791H6.884C4.721 14.513.476 12.227 1.722 8.872L.664 7.998.55 8.189 1.059 8.678C.943 8.93.873 9.197.849 9.436L.165 9.599V10.39L.869 10.559C.875 10.734 1.005 11.264 1.074 11.345L.552 11.799.973 12.519 1.636 12.31C1.665 12.406 2.017 12.769 2.179 12.864L1.98 13.52 2.673 13.954 3.144 13.444C3.399 13.541 3.722 13.636 3.941 13.638L4.075 14.308H4.903L5.048 13.64C5.311 13.615 5.599 13.533 5.809 13.442L6.294 13.947 6.999 13.532 6.788 12.895C6.997 12.719 7.234 12.485 7.365 12.296L8.02 12.529 8.292 12.085H15.89ZM6.353 11.833C4.646 13.653 1.124 12.188 2.018 9.091L1.944 9.046C.906 11.966 4.53 14.027 6.489 11.839Z" fill="#2351AC" />
+                        <path d="M-.006 7.046 4.041 10.362 3.696 9.089 6.071 11.032 5.723 9.833 7.964 11.427 4.935 8.642 5.305 9.923 2.972 8.051 3.251 9.051Z" fill="#FF6E12" />
+                        <path d="M8.553 8.625V11.517H11.466V10.571H9.403 11.466V9.572H9.403 11.466V8.625H12.361V11.517H11.467 13.264V10.513H14.398V11.517H18.177V9.554H16.22 18.177V8.641H15.28V10.566H17.269 15.28V11.517 8.641H14.398V9.637H13.264V8.625ZM11.467 8.625H12.361V11.517H11.467Z" stroke-width="0.3px" stroke="#FF6E12" fill="#FFFFFF" />
+                        <path d="M5.4 8.555H7.717V10.852Z" fill="#FFFFFF" />
+                        <path d="M3.191 11.527 3.323 11.618 3.382 11.535 3.517 11.626 3.434 11.785 3.294 11.698 3.257 11.766 3.395 11.863 3.306 12.028 3.125 11.907 3.169 11.851 3.038 11.77 2.964 11.886 3.376 12.177 3.707 11.648 3.29 11.384ZM4.554 11.797 5.045 11.698 4.915 12.335 4.738 12.379 4.888 11.838 4.56 11.892ZM3.886 11.725 4.359 11.792 4.354 11.974 4.223 11.937 4.215 11.857 4.009 11.838 4.004 12.002 4.228 12.026 4.312 12.08 4.316 12.298 4.22 12.394 3.786 12.313 3.957 12.287 4.14 12.295 4.17 12.109 3.977 12.068 3.957 12.287 3.786 12.313ZM5.388 11.528 5.405 12.083 5.703 11.923 5.761 12.014 5.933 11.918 5.858 11.821 5.933 11.771 5.881 11.726 5.82 11.764 5.587 11.386 5.485 11.588 5.668 11.841 5.477 11.956 5.485 11.588 5.587 11.386ZM8.667 12.488 8.615 12.543V12.654L8.654 12.7H8.819L8.863 12.658V12.546L8.816 12.497ZM17.215 12.485 17.165 12.533V12.664L17.219 12.705H17.368L17.422 12.659V12.543L17.362 12.485ZM9.241 12.405 9.59 12.845H9.783L10.14 12.397H9.946L9.695 12.745 9.413 12.397ZM10.289 12.402H11.041V12.474H10.447V12.576H10.983V12.662H10.441V12.759H11.071V12.847H10.292ZM11.276 12.409H11.48L11.695 12.541 11.893 12.395H12.121L11.814 12.61 12.142 12.837H11.893L11.683 12.709 11.485 12.845H11.249L11.549 12.614ZM12.656 12.401H13.393V12.474H13.102V12.844H12.978V12.476H12.657ZM13.58 12.404H14.331V12.476H13.695V12.577H14.243V12.654H13.691V12.765H14.365V12.836H13.58ZM14.879 12.4H15.107L15.498 12.834H15.292L15 12.495 14.85 12.651H15.135L15.212 12.739H14.763L14.682 12.838H14.498ZM15.607 12.402H15.858L16.095 12.711 16.324 12.392H16.592V12.843H16.41V12.52L16.173 12.848H16.02L15.768 12.512V12.846H15.607Z" fill="#FFFFFF" />
+                    </svg>
+                    <p>Vex Robotics is the largest global robotics competition platform in the world. The High school division alone has over 10000 competitive teams from nations all over the world. The system encourages innovation, creativity, and fundamental engineering principles in students all around the world through a year-long competition that culminates in a 400-team world championship, with teams from all around the world competing for the final trophy.<br><br>Here at Energy, the 3674 organization takes a unique approach to vex. Instead of having one singular team, we field 4, encouraging parallel design and collaboration, as well as friendly competition between teams. This allows us to iterate rapidly, help each other out, and ensure that more students have access to the wonder that is vex robotics</p>
+                    <p><strong>Roles and Responsibilities:</strong></p>
+                    <ul>
+                        <li><strong>Builder</strong></li>
+                        <p>The Builder is responsible for the primary construction of the robot and its subsystems. Their skills typically include tool skills, an eye for detail, and a good idea for design and structural stability. They also typically have a major say in the design of a robot, as their work build has lent them an intensive understanding of mechanisms, bracing, and more.</p>
+                        <li style='font-family: "Silkscreen", sans-serif;'>Coder</li>
+                        <p>The Coder is responsible for programming the basic functions of the robot and the more advanced autonomous and skills routes that the team will use in competition. Their skills typically involve a deep understanding of C++ (the typical programming language used in vex) and an eye for optimization of paths and efficiency.</p>
+                        <li><strong>Driver</strong></li>
+                        <p>The Driver is the main performance-oriented role of the team. Although all roles must function well for the team to succeed, a good robot without a driver will not succeed. This role is seen by some as the hardest or most practice-intensive role within a typical vex team. Drivers typically have quick reflexes, work well under pressure and tight windows, and have a good ability to focus in a loud environment.</p>
+                        <li><strong>Notebook/Design</strong></li>
+                        <p>The Notebook & Design team is the least flashy role on the team. Still, without a good plan or good documentation, timelines and plans fall apart and any award is far out of reach. As a result, this team, while overlooked at first, is critical to any competitive team’s success. This team is typically organized, and a good knowledge of the game, the rules, robot construction and design, and strategy are needed to ensure they can direct the team where they need to go.</p>
+                    </ul>
+                    <svg role="img" width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g>
+                            <circle cx="12" cy="12" r="5" stroke="#4caf50" stroke-width="2" fill="white"/>
+                            <path d="M12 7V4.5 M12 17V19.5 M7 12H4.5 M17 12H19.5 M8.818 15.17L6.694 17.305M8.818 8.818L6.689 6.689M15.17 8.818L17.305 6.694M15.17 15.17L17.3 17.3" stroke="#4caf50" stroke-width="2"/>
+                        </g>
+                    </svg>
+                </div>
+                <div class="page_radio_container hidden page_radio_1">
+                    <h2 class="subtitle">Our Teams</h2>
+                    <!--Needs to be cropped but other than that its good-->
+                    <svg role="img" width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g>
+                            <circle cx="12" cy="12" r="5" stroke="#ff9800" stroke-width="2" fill="white"/>
+                            <path d="M12 7V4.5 M12 17V19.5 M7 12H4.5 M17 12H19.5 M8.818 15.17L6.694 17.305M8.818 8.818L6.689 6.689M15.17 8.818L17.305 6.694M15.17 15.17L17.3 17.3" stroke="#ff9800" stroke-width="2"/>
+                        </g>
+                    </svg>
+                    <img src="./nexus.png" style="width:500px;height:auto;" alt="3674N's Logo" />
+                    <p>My mission is to prepare the next generation of the VEX Robotics club. The team, composed mainly of freshmen, is committed to learning knowledge, and developing the skills needed to succeed in robotics and more. By fostering teamwork, creativity, and perseverance, we aim to equip every member with the tools to grow as problem-solvers and leaders, ensuring the strength and continuation of our club for years to come.</p>
+                    <svg role="img" width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g>
+                            <circle cx="12" cy="12" r="5" stroke="#ff9800" stroke-width="2" fill="white"/>
+                            <path d="M12 7V4.5 M12 17V19.5 M7 12H4.5 M17 12H19.5 M8.818 15.17L6.694 17.305M8.818 8.818L6.689 6.689M15.17 8.818L17.305 6.694M15.17 15.17L17.3 17.3" stroke="#ff9800" stroke-width="2"/>
+                        </g>
+                    </svg>
+                    <img src="./recon.png" alt="3674R's Logo" />
+                    <p>Team 3674R is an 11 person VEX Robotics team captained by Ramon Khattar Hatem. Their long goal is to qualify for the VEX Robotics World Championship in St. Louis Missouri. The team is dedicated to the design, development, and performance of the competition robot and will do their best to reach their long term goals through hard work, perseverance, and adaptability. As a team, we want to earn awards, have fun at competitions, and build our skills and leave our younger engineers with enough skills to perform even better every following year.</p>
+                    <svg role="img" width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g>
+                            <circle cx="12" cy="12" r="5" stroke="#ff9800" stroke-width="2" fill="white"/>
+                            <path d="M12 7V4.5 M12 17V19.5 M7 12H4.5 M17 12H19.5 M8.818 15.17L6.694 17.305M8.818 8.818L6.689 6.689M15.17 8.818L17.305 6.694M15.17 15.17L17.3 17.3" stroke="#ff9800" stroke-width="2"/>
+                        </g>
+                    </svg>
+                    <img src="./girls.png" alt="3674G's Logo" />
+                    <p>Our mission is to empower young women in robotics by innovation, collaboration, and leadership in a male-dominated field. The girls team believes in promoting equality, embracing diversity, and breaking the barriers in STEM. Through teamwork, creativity, and determination, we strive to inspire future generations of girls to pursue their passions in technology and engineering with confidence.</p>
+                    <svg role="img" width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g>
+                            <circle cx="12" cy="12" r="5" stroke="#ff9800" stroke-width="2" fill="white"/>
+                            <path d="M12 7V4.5 M12 17V19.5 M7 12H4.5 M17 12H19.5 M8.818 15.17L6.694 17.305M8.818 8.818L6.689 6.689M15.17 8.818L17.305 6.694M15.17 15.17L17.3 17.3" stroke="#ff9800" stroke-width="2"/>
+                        </g>
+                    </svg>
+                    <img src="./unity.png" alt="3674U's Logo" width="270" height="151.75" />
+                    <p>Unity is built on hands-on experience and teamwork. Through problem solving, adaptability, and communication, our members grow together. We unite students from diverse backgrounds to learn, lead, and prepare the next generation of robotics innovators. Every challenge is a chance to grow.  WIth every member playing a vital role.</p>
+                    <svg role="img" width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g>
+                            <circle cx="12" cy="12" r="5" stroke="#ff9800" stroke-width="2" fill="white"/>
+                            <path d="M12 7V4.5 M12 17V19.5 M7 12H4.5 M17 12H19.5 M8.818 15.17L6.694 17.305M8.818 8.818L6.689 6.689M15.17 8.818L17.305 6.694M15.17 15.17L17.3 17.3" stroke="#ff9800" stroke-width="2"/>
+                        </g>
+                    </svg>
+                </div>
+                <div class="page_radio_container hidden page_radio_2">
+                    <h2 class="subtitle">Competition Schedule</h2>
+                    <table id="competition_table">
+                        <thead>
+                            <tr>
+                                <th>&nbsp;</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Location</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                    <script type="text/javascript">
+                        async function getData() {
+                            const table = document.querySelector('table[id="competition_table"] > tbody');
+                            try {
+                                const response = await fetch("./events.json");
+                                const jsonData = await response.json();
+                                for (var i = 0; i < jsonData.length; i++) {
+                                    const data = jsonData[i];
+                                    const row = table.appendChild(document.createElement("tr"));
+                                    row.appendChild(document.createElement("td")).textContent = data.name;
+                                    row.appendChild(document.createElement("td")).textContent = data.date;
+                                    row.appendChild(document.createElement("td")).textContent = data.time;
+                                    const a = row.appendChild(document.createElement("td")).appendChild(document.createElement("a"));
+                                    a.href = "https://maps.app.goo.gl/" + data.location.code;
+                                    a.textContent = data.location.text;
+                                }
+                            } catch (e) {
+                                table.remove();
+                                //Error message here
+                            }
+                        }
+                        getData();
+                    </script>
+                </div>
+            </div>
+        </section>
+        <script type="text/javascript">
+            const buttons = document.querySelectorAll('input[name="sidebar_option"]');
+            buttons.forEach(button => {
+                button.addEventListener('change', () => {
+                    const value = document.getElementById("sidebar_buttons_container").querySelector('input[name="sidebar_option"]:checked').value;
+                    document.querySelector("div.page_radio_container.visible").classList.replace("visible", "hidden");
+                    document.querySelector("div.page_radio_container.hidden.page_radio_" + value).classList.replace("hidden", "visible");
+                });
+            });
+
+            var collaped = false;
+
+            const collaps_div = document.querySelector("div.collapse_button"), collaps = document.querySelector("button.material_icon_button"), collaps_text = document.querySelector("span.material_icon.show_hover"), sidebar = document.querySelector("div.sidebar"), sidebar_section = document.querySelector("section.sidebar");
+            collaps.addEventListener('click', () => {
+                if (collaped) {
+                    sidebar.style = "animation: collapse reverse 0.5s;";
+                    collaps_div.style = "animation: slide reverse 0.5s;";
+                    collaps_text.style = "animation: spin360 ease-out 0.5s;";
+                    setTimeout(() => {
+                        collaps_text.removeAttribute("style");
+                        collaps_div.removeAttribute("style");
+                        sidebar.removeAttribute("style");
+                        sidebar_section.removeAttribute("style");
+                        collaps_text.classList = "material_icon show_hover";
+                    }, 500);
+                } else {
+                    sidebar.style = "animation: collapse 0.5s; left: -256px;";
+                    collaps_div.style = "animation: slide 0.5s; left: 45px;";
+                    collaps_text.style = "animation: spin180 ease-out 0.5s; transform: rotateZ(180deg);";
+                    collaps_text.classList = "material_icon show";
+                    setTimeout(() => {
+                        sidebar.style = "left: -256px;";
+                        collaps_div.style = "left: 45px;";
+                        collaps_text.style = "transform: rotateZ(180deg);";
+                        sidebar_section.style = "position: absolute;";
+                    }, 500);
+                }
+                collaped = !collaped;
+            });
+        </script>
+    </body>
+</html>
