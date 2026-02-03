@@ -199,7 +199,7 @@ char *parseHost(int clientFd, char *readAddr, size_t memSize) {
     }
     free(readBuf);
     free(testBuf);
-    return output == NULL ? format(memSize + 6, "main/%s\0", readAddr) : output;
+    return output == NULL ? format(memSize + 11, "eihsclubs/%s\0", readAddr) : output;
 }
 
 /*ChatGPT made this. I will make a better version in the loop for ASM
