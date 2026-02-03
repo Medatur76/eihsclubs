@@ -28,8 +28,7 @@ int main() {
     int opt = 1;
     int addrlen = sizeof(address);
     size_t writeBufSize = 16384;
-    char *readBuf = malloc(1), *writeBuf = malloc(writeBufSize),
-    *http200 = "HTTP/1.1 200 OK\r\nContent-Type: %s; charset=UTF-8\r\nTransfer-Encoding: chunked\r\n\r\n",
+    char *http200 = "HTTP/1.1 200 OK\r\nContent-Type: %s; charset=UTF-8\r\nTransfer-Encoding: chunked\r\n\r\n",
     *http404 = "HTTP/1.1 404 Not Found\r\n\r\n404";
 
     if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0) {
@@ -71,6 +70,7 @@ int main() {
             exit(EXIT_FAILURE);
         } else if (process != 0) continue;
         int exit_code = EXIT_SUCCESS;
+        char *readBuf = malloc(1), *writeBuf = malloc(writeBufSize);
         read(client_socket, readBuf, 1);
         while (readBuf[0] != '/') read(client_socket, readBuf, 1);
         size_t readSize = 1;
@@ -145,16 +145,15 @@ int main() {
         }
         write(client_socket, "0\r\n\r\n", 5);
         cleanup:
-        close(filePtr);
+        if (filePtr >= 0) close(filePtr);
         shutdown(client_socket, SHUT_WR);
         close(client_socket);
         munmap(readAddr, readSize);
         free(fileAddr);
+        free(readBuf);
+        free(writeBuf);
         exit(exit_code);
     }
-
-    free(readBuf);
-    free(writeBuf);
     close(server_fd);
     return 0;
 }
@@ -180,8 +179,9 @@ char *parseHost(int clientFd, char *readAddr, size_t memSize) {
     while (read(clientFd, readBuf, 1) == 1) {
         if (readBuf[0] != '\n' && readBuf[0] != '\r') continue;
         read(clientFd, readBuf, 1);
-        if (read(clientFd, testBuf, 5) != 5) break;
-        if (strcmp(testBuf, "Host:") != 0) continue;
+        size_t testSize;
+        if (testSize = read(clientFd, testBuf, 5) != 5) break;
+        if (strncmp(testBuf, "Host:", testSize) != 0) continue;
         read(clientFd, readBuf, 1);
         if (readBuf[0] == ' ') read(clientFd, readBuf, 1);
         size_t domainSize = 1;
