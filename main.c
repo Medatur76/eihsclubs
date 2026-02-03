@@ -14,7 +14,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-#define errclose exit_code = EXIT_FAILURE;goto cleanup
+#define errclose exit_code = EXIT_FAILURE; goto cleanup
 
 char *parseHost(int, char *, size_t);
 void print(char *);
