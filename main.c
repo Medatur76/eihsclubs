@@ -14,6 +14,8 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
+#define errclose exit_code = EXIT_FAILURE;goto cleanup
+
 char *parseHost(int, char *, size_t);
 void print(char *);
 char *format(size_t, const char *__restrict format, ...);
@@ -68,13 +70,14 @@ int main() {
             perror("Forking error");
             exit(EXIT_FAILURE);
         } else if (process != 0) continue;
+        int exit_code = EXIT_SUCCESS;
         read(client_socket, readBuf, 1);
         while (readBuf[0] != '/') read(client_socket, readBuf, 1);
         size_t readSize = 1;
         readAddr = mmap(NULL, readSize, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
         if (readAddr == MAP_FAILED) {
             perror("MAPPING FAIL");
-            exit(EXIT_FAILURE);
+            errclose;
         }
         bool fileExt = false;
         read(client_socket, readBuf, 1);
@@ -91,52 +94,67 @@ int main() {
                 readAddr = mremap(readAddr, readSize, ++readSize, MREMAP_MAYMOVE);
             }
         }
-        if (!fileExt) {
-            readAddr = mremap(readAddr, readSize, readSize += 5, MREMAP_MAYMOVE);
-            memcpy(readAddr + readSize - 5, ".html", 5);
-        }
         char *fileAddr = parseHost(client_socket, readAddr, readSize);
         print(fileAddr);
-        print("\n");
 
-        int filePtr = open((char *) fileAddr, O_RDONLY);
+        int filePtr = open(fileAddr, O_RDONLY);
         if (filePtr < 0) {
-            write(client_socket, http404, strlen(http404));
-        } else {
-            char *header = format(strlen(http200) + 25, http200, get_mime_type(readAddr));
-            write(client_socket, header, strlen(header));
-            free(header);
-            int iRead;
-            while ((iRead = read(filePtr, writeBuf, writeBufSize)) > 0) {
-                char *chunkHeader = format(32, "%x\r\n", iRead);
-                write(client_socket, chunkHeader, strlen(chunkHeader));
-                int totalWritten = 0;
-                while (totalWritten < iRead) {
-                    int iWritten = write(client_socket, writeBuf + totalWritten, iRead - totalWritten);
-                    if (iWritten < 0) {
-                        perror("write to client");
-                        exit(EXIT_FAILURE);
-                    }
-                    totalWritten += iWritten;
+            if (!fileExt) {
+                size_t tmpSize;
+                fileAddr = realloc(fileAddr, tmpSize = strlen(fileAddr) + 6);
+                memcpy(fileAddr + tmpSize - 6, ".html\0", 6);
+                filePtr = open(fileAddr, O_RDONLY);
+                if (filePtr < 0) {
+                    write(client_socket, http404, strlen(http404));
+                    print("(404)\n");
+                    errclose;
                 }
-                /* terminate this chunk */
-                write(client_socket, "\r\n", 2);
-                free(chunkHeader);
+            } else {
+                write(client_socket, http404, strlen(http404));
+                print("(404)\n");
+                errclose;
             }
-            if (iRead < 0) {
-                perror("read file");
-                exit(EXIT_FAILURE);
+            print("(");
+            print(fileAddr);
+            print(" ");
+        } else print("(200 ");
+        print((char *) get_mime_type(fileAddr));
+        print(")\n");
+        char *header = format(strlen(http200) + 25, http200, get_mime_type(fileAddr));
+        write(client_socket, header, strlen(header));
+        free(header);
+        int iRead;
+        while ((iRead = read(filePtr, writeBuf, writeBufSize)) > 0) {
+            char *chunkHeader = format(32, "%x\r\n", iRead);
+            write(client_socket, chunkHeader, strlen(chunkHeader));
+            int totalWritten = 0;
+            while (totalWritten < iRead) {
+                int iWritten = write(client_socket, writeBuf + totalWritten, iRead - totalWritten);
+                if (iWritten < 0) {
+                    perror("write to client");
+                    errclose;
+                }
+                totalWritten += iWritten;
             }
-            write(client_socket, "0\r\n\r\n", 5);
-            close(filePtr);
+            write(client_socket, "\r\n", 2);
+            free(chunkHeader);
         }
+        if (iRead < 0) {
+            perror("read file");
+            errclose;
+        }
+        write(client_socket, "0\r\n\r\n", 5);
+        cleanup:
+        close(filePtr);
         shutdown(client_socket, SHUT_WR);
         close(client_socket);
         munmap(readAddr, readSize);
         free(fileAddr);
-        exit(EXIT_SUCCESS);
+        exit(exit_code);
     }
 
+    free(readBuf);
+    free(writeBuf);
     close(server_fd);
     return 0;
 }
@@ -158,11 +176,12 @@ char *format(size_t maxlen, const char *__restrict format, ...) {
 }
 
 char *parseHost(int clientFd, char *readAddr, size_t memSize) {
-    char *readBuf = malloc(1), *testBuf = malloc(5);
-    while (1) {
-        while (readBuf[0] != '\n') read(clientFd, readBuf, 1);
+    char *readBuf = malloc(1), *testBuf = malloc(5), *output = NULL;
+    while (read(clientFd, readBuf, 1) == 1) {
+        if (readBuf[0] != '\n' && readBuf[0] != '\r') continue;
         read(clientFd, readBuf, 1);
-        if (!(read(clientFd, testBuf, 5) == 5 && strcmp(testBuf, "Host:"))) continue;
+        if (read(clientFd, testBuf, 5) != 5) break;
+        if (strcmp(testBuf, "Host:") != 0) continue;
         read(clientFd, readBuf, 1);
         if (readBuf[0] == ' ') read(clientFd, readBuf, 1);
         size_t domainSize = 1;
@@ -174,14 +193,20 @@ char *parseHost(int clientFd, char *readAddr, size_t memSize) {
             domainBuf[domainSize - 1] = readBuf[0];
             read(clientFd, readBuf, 1);
         }
-        return format(memSize + 6 + domainSize, "web/%s/%s\0", domainBuf, readAddr);
+        output = format(memSize + 2 + domainSize, "%s/%s\0", domainBuf, readAddr);
+        munmap(domainBuf, domainSize);
+        break;
     }
+    free(readBuf);
+    free(testBuf);
+    return output == NULL ? format(memSize + 6, "main/%s\0", readAddr) : output;
 }
 
 /*ChatGPT made this. I will make a better version in the loop for ASM
 TODO Add restricted file types instead of default case*/
 const char *get_mime_type(const char *path) {
     const char *ext = strrchr(path, '.');
+    if (ext == NULL) return "text/plain";
     ext++; // skip '.'
 
     if (!strcasecmp(ext, "html")) return "text/html";
@@ -193,9 +218,10 @@ const char *get_mime_type(const char *path) {
         return "image/jpeg";
     if (!strcasecmp(ext, "gif"))  return "image/gif";
     if (!strcasecmp(ext, "svg"))  return "image/svg+xml";
-    if (!strcasecmp(ext, "txt"))  return "text/plain";
     if (!strcasecmp(ext, "pdf"))  return "application/pdf";
     if (!strcasecmp(ext, "webp")) return "image/webp";
+    if (!strcasecmp(ext, "ico")) return "image/vnd.microsoft.icon";
 
-    return "application/octet-stream";
+    //return "application/octet-stream";
+    return "text/plain";
 }
