@@ -1,5 +1,6 @@
 [
     {
-        "cover": "./img/GabeCoverRedesign.png"
+        "cover": "./img/GabeCoverRedesign.png",
+        "available": false
     }
 ]
