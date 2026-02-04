@@ -13,9 +13,13 @@
 #include <signal.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <limits.h>
 
 #define errclose exit_code = EXIT_FAILURE; goto cleanup
 
+//TODO Make this stop from going from one domain to another (e.g. eihsclubs.com/../outlet/index.html)
+//And fix the output in the console (e.g. web/eihsclubs/index(web/eihsclubs/index.html (200 text/html), and overlapped messages)
+bool isSafePath(char *);
 char *parseHost(int, char *, size_t);
 void print(char *);
 char *format(size_t, const char *__restrict format, ...);
@@ -29,7 +33,8 @@ int main() {
     int addrlen = sizeof(address);
     size_t writeBufSize = 16384;
     char *http200 = "HTTP/1.1 200 OK\r\nContent-Type: %s; charset=UTF-8\r\nTransfer-Encoding: chunked\r\n\r\n",
-    *http404 = "HTTP/1.1 404 Not Found\r\n\r\n404";
+    *http404 = "HTTP/1.1 404 Not Found\r\n\r\n404",
+    *http403 = "HTTP/1.1 403 Forbidden\r\n\r\n";
 
     if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0) {
         perror("socket failed");
@@ -117,8 +122,15 @@ int main() {
             print("(");
             print(fileAddr);
             print(" ");
-        } else print("(200 ");
-        print((char *) get_mime_type(fileAddr));
+        }
+        const char *type = get_mime_type(fileAddr);
+        if (type == NULL || !isSafePath(fileAddr)) {
+            write(client_socket, http403, strlen(http403));
+            print("(403)");
+            goto cleanup;
+        }
+        print("(200 ");
+        print((char *) type);
         print(")\n");
         char *header = format(strlen(http200) + 25, http200, get_mime_type(fileAddr));
         write(client_socket, header, strlen(header));
@@ -158,6 +170,33 @@ int main() {
     return 0;
 }
 
+
+/*ChatGPT again cuz i was NOT bouta figure out linux filesystems*/
+bool isSafePath(char *request) {
+    char webFolder[PATH_MAX];
+    char requestedFile[PATH_MAX];
+
+    if (!realpath("web/", webFolder)) {
+        perror("realpath(\"web/\", webFolder)");
+        return false;
+    }
+
+    if (!realpath(request, requestedFile)) {
+        perror("realpath(request, requestedFile)");
+        return false;
+    }
+
+    size_t len = strlen(webFolder);
+
+    // Folder must match prefix exactly
+    if (strncmp(requestedFile, webFolder, len) != 0)
+        return 0;
+
+    // Ensure boundary ("/" or end of string)
+    return requestedFile[len] == '\0' || requestedFile[len] == '/';
+}
+
+
 void print(char *data) {
     int len = strlen(data);
     write(1, data, len);
@@ -193,13 +232,13 @@ char *parseHost(int clientFd, char *readAddr, size_t memSize) {
             domainBuf[domainSize - 1] = readBuf[0];
             read(clientFd, readBuf, 1);
         }
-        output = format(memSize + 2 + domainSize, "%s/%s\0", domainBuf, readAddr);
+        output = format(memSize + 6 + domainSize, "web/%s/%s\0", domainBuf, readAddr);
         munmap(domainBuf, domainSize);
         break;
     }
     free(readBuf);
     free(testBuf);
-    return output == NULL ? format(memSize + 11, "eihsclubs/%s\0", readAddr) : output;
+    return output == NULL ? format(memSize + 15, "web/eihsclubs/%s\0", readAddr) : output;
 }
 
 /*ChatGPT made this. I will make a better version in the loop for ASM
@@ -223,5 +262,5 @@ const char *get_mime_type(const char *path) {
     if (!strcasecmp(ext, "ico")) return "image/vnd.microsoft.icon";
 
     //return "application/octet-stream";
-    return "text/plain";
+    return NULL;
 }
