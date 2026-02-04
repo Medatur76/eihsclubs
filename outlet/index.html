@@ -38,8 +38,11 @@
             <clipPath id="mugshot" clipPathUnits="objectBoundingBox">
                 <circle cx=".5" cy=".5" r=".25" />
             </clipPath>
-            <clipPath id="connordoeswork" clipPathUnits="objectBoundingBox">
+            <clipPath id="connordoesworksometimes" clipPathUnits="objectBoundingBox">
                 <ellipse cx="0.5" cy="0.5" rx="0.6" ry="0.4" transform="translate(.2,.1) rotate(70 0.5 0.5)" />
+            </clipPath>
+            <clipPath id="cornerPhoto" clipPathUnits="objectBoundingBox">
+                <path d="M.9363.3484C.8494.173.6744.0444.488.0242.3358 0 .2357.0745.154.177.0722.2796.0287.4103.0112.5422.0019.6118 0 .6857.0284.7495.0644.8304.1431.8819.2232.9139.4385 1 .703.9666.8706.8017.923.7501.966.6855.9814.6121 1 .5232.9764.4294.9363.3484Z" />
             </clipPath>
         </svg>
         <div class="scroll_container">
@@ -278,10 +281,10 @@
                 </div>
                 <div class="right">
                     <div id="title">Contact</div>
-                    <svg style="position:absolute;bottom:0;right:0;height:72vh;width:47.67vw;clip-path: url(#connordoeswork);transform:translateX(-4vw);">
+                    <svg style="position:absolute;bottom:0;right:0;height:72vh;width:47.67vw;clip-path: url(#connordoesworksometimes);transform:translateX(-4vw);">
                         <rect x="0" y="0" width="100%" height="100%" fill="black" opacity="0.85"/>
                     </svg>
-                    <div style="position:absolute;bottom:0;right:0;height:72vh;width:47.67vw;clip-path: url(#connordoeswork);">
+                    <div style="position:absolute;bottom:0;right:0;height:72vh;width:47.67vw;clip-path: url(#connordoesworksometimes);">
                         <img src="./img/IMG_2654.jpg" style="height:82vh;width:auto;position:absolute;bottom:-10vh;right:-15vw;transform:scaleX(-1);">
                     </div>
                 </div>
@@ -289,13 +292,17 @@
             <section id="sources">
                 <div class="left">
                     <h1>Sources</h1>
-                    <img src="./img/IMG_1225.jpg" style="position: relative;left:0;top:-15vw;width: 40vw;"/>
+                    <svg style="position:absolute;left:-5vw;bottom:-10vw;width:40vw;aspect-ratio:1;clip-path:url(#cornerPhoto);transform:scale(115%, 105%);">
+                        <rect x="0" y="0" width="100%" height="100%" fill="rgba(0,0,0,0.26)" opacity="0.85"/>
+                    </svg>
+                    <div style="position:absolute;left:-5vw;bottom:-10vw;width:40vw;aspect-ratio:1;overflow:hidden;clip-path:url(#cornerPhoto);">
+                        <img src="./img/IMG_1225.jpg" style="position:relative;top:-11vw;width:40vw;"/>
+                    </div>
                 </div>
                 <div class="right text">
                     <div style="padding: 8% 20%;">Our club runs out of Energy Institute High School in HISD, we thank our school for giving us the opportunity to express our creativity and share our passion with our school</div>
                     <div class="horizontal" style="scale: 90%;padding: 0 10%;">
                         <img src="./img/HoustonISD_seal.svg" style="width:15vw;" />
-                        <!--Need to fix colors here-->
                         <div style="height: 15vw;width: 15w;overflow: hidden;">
                             <img src="./img/file.svg" style="width: 45vw;position: relative;top: -15vw;left: -10vw;"/>
                         </div>
