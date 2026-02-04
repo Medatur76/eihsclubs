@@ -296,9 +296,11 @@ section#donate div.right {
 }
 
 div.funky_img {
-    --size: 40em;
+    --size: 40vw;
     height: var(--size);
     width: var(--size);
     clip-path:url(#bruhhh);
-    position: absolute;
+    position: relative;
+    top: .4vw;
+    left: .2vw;
 }
