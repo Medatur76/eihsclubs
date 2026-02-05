@@ -2,10 +2,18 @@
 
 [ ! -d "./bin" ] && mkdir "./bin"
 
-gcc main.c -o ./bin/main
+gcc -c main.c -o ./bin/main.o
 
-chmod +x ./bin/main
+gcc -x assembler -c auto_update.asm -o ./bin/git_update.o
 
-./bin/main
+cd bin
+
+gcc main.o git_update.o -o main
+
+chmod +x ./main
+
+./main
 
 echo -e ""
+
+cd ..

@@ -18,13 +18,22 @@
 #define errclose exit_code = EXIT_FAILURE; goto cleanup
 #define writeBufSize 16384
 
+int git_pull();
+
 //TODO Make this stop from going from one domain to another (e.g. eihsclubs.com/../outlet/index.html)
 //And fix the output in the console (e.g. web/eihsclubs/index(web/eihsclubs/index.html (200 text/html), and overlapped messages)
 bool isSafePath(char *);
-char *parseHost(int, char *, size_t);
+char *parseHost(int);
 void print(char *);
 char *format(size_t, const char *__restrict format, ...);
 const char *get_mime_type(const char *);
+
+typedef enum _Method {
+    GET,
+    HEAD,
+    POST,
+    UNALLOWED
+} Method;
 
 int main() {
     int server_fd, client_socket;
@@ -33,8 +42,11 @@ int main() {
     int opt = 1;
     int addrlen = sizeof(address);
     char *http200 = "HTTP/1.1 200 OK\r\nContent-Type: %s; charset=UTF-8\r\nTransfer-Encoding: chunked\r\n\r\n",
+    *http200Empty = "HTTP/1.1 200 OK\r\n\r\n",
     *http404 = "HTTP/1.1 404 Not Found\r\n\r\n404",
-    *http403 = "HTTP/1.1 403 Forbidden\r\n\r\n";
+    *http403 = "HTTP/1.1 403 Forbidden\r\n\r\n",
+    *http405 = "HTTP/1.1 405 Method Not Allowed\r\nAllow: GET, POST, HEAD\r\n\r\n",
+    *http500 = "500 Internal Server Error\r\n\r\n";
 
     if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0) {
         perror("socket failed");
@@ -77,6 +89,12 @@ int main() {
         int exit_code = EXIT_SUCCESS;
         char *readBuf = malloc(1), *writeBuf = malloc(writeBufSize);
         read(client_socket, readBuf, 1);
+        Method method = readBuf[0] == 'G' ? GET : readBuf[0] == 'H' ? HEAD : readBuf[0] == 'P' ? POST : UNALLOWED;
+        if (method == UNALLOWED) {
+            write(client_socket, http405, strlen(http405));
+            print("Unallowed method requested (405)\n");
+            errclose;
+        }
         while (readBuf[0] != '/') read(client_socket, readBuf, 1);
         size_t readSize = 1;
         readAddr = mmap(NULL, readSize, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
@@ -99,7 +117,24 @@ int main() {
                 readAddr = mremap(readAddr, readSize, ++readSize, MREMAP_MAYMOVE);
             }
         }
-        char *fileAddr = parseHost(client_socket, readAddr, readSize);
+
+        char *subdomain = parseHost(client_socket);
+
+        if (strcasecmp(subdomain, "api") == 0 && method == POST) {
+            //TODO Make this less hardcoded if I expand on this
+            if (strcmp(readAddr, "pushEvent") == 0) {
+                if (!git_pull()) {
+                    write(client_socket, http500, strlen(http500));
+                    errclose;
+                }
+                write(client_socket, http200Empty, strlen(http200Empty));
+                goto cleanup;
+            } else {
+                errclose;
+            }
+        }
+
+        char *fileAddr = format(readSize + 6 + strlen(subdomain), "web/%s/%s\0", subdomain, readAddr);
         print(fileAddr);
 
         int filePtr = open(fileAddr, O_RDONLY);
@@ -161,6 +196,7 @@ int main() {
         shutdown(client_socket, SHUT_WR);
         close(client_socket);
         munmap(readAddr, readSize);
+        munmap(subdomain, strlen(subdomain));
         free(fileAddr);
         free(readBuf);
         free(writeBuf);
@@ -213,8 +249,8 @@ char *format(size_t maxlen, const char *__restrict format, ...) {
     return out;
 }
 
-char *parseHost(int clientFd, char *readAddr, size_t memSize) {
-    char *readBuf = malloc(1), *testBuf = malloc(5), *output = NULL;
+char *parseHost(int clientFd) {
+    char *readBuf = malloc(1), *testBuf = malloc(5), *output = "eihsclubs";
     while (read(clientFd, readBuf, 1) == 1) {
         if (readBuf[0] != '\n' && readBuf[0] != '\r') continue;
         read(clientFd, readBuf, 1);
@@ -232,13 +268,12 @@ char *parseHost(int clientFd, char *readAddr, size_t memSize) {
             domainBuf[domainSize - 1] = readBuf[0];
             read(clientFd, readBuf, 1);
         }
-        output = format(memSize + 6 + domainSize, "web/%s/%s\0", domainBuf, readAddr);
-        munmap(domainBuf, domainSize);
+        output = domainBuf;
         break;
     }
     free(readBuf);
     free(testBuf);
-    return output == NULL ? format(memSize + 15, "web/eihsclubs/%s\0", readAddr) : output;
+    return output;
 }
 
 /*ChatGPT made this. I will make a better version in the loop for ASM
