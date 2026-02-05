@@ -42,7 +42,7 @@ int main() {
     int opt = 1;
     int addrlen = sizeof(address);
     char *http200 = "HTTP/1.1 200 OK\r\nContent-Type: %s; charset=UTF-8\r\nTransfer-Encoding: chunked\r\n\r\n",
-    *http200Empty = "HTTP/1.1 200 OK\r\n\r\n",
+    *http202 = "HTTP/1.1 202 Accepted\r\n\r\n",
     *http404 = "HTTP/1.1 404 Not Found\r\n\r\n404",
     *http403 = "HTTP/1.1 403 Forbidden\r\n\r\n",
     *http405 = "HTTP/1.1 405 Method Not Allowed\r\nAllow: GET, POST, HEAD\r\n\r\n",
@@ -123,14 +123,15 @@ int main() {
         if (strcasecmp(subdomain, "api") == 0 && method == POST) {
             //TODO Make this less hardcoded if I expand on this
             if (strcmp(readAddr, "pushEvent") == 0) {
+                print("POST web/api/pushEvent (");
                 if (!git_pull()) {
                     write(client_socket, http500, strlen(http500));
+                    print("500)\n");
                     errclose;
                 }
-                write(client_socket, http200Empty, strlen(http200Empty));
+                write(client_socket, http202, strlen(http202));
+                print("202)\n");
                 goto cleanup;
-            } else {
-                errclose;
             }
         }
 
