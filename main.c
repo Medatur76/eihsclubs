@@ -16,6 +16,7 @@
 #include <limits.h>
 
 #define errclose exit_code = EXIT_FAILURE; goto cleanup
+#define writeBufSize 16384
 
 //TODO Make this stop from going from one domain to another (e.g. eihsclubs.com/../outlet/index.html)
 //And fix the output in the console (e.g. web/eihsclubs/index(web/eihsclubs/index.html (200 text/html), and overlapped messages)
@@ -31,7 +32,6 @@ int main() {
     struct sockaddr_in address;
     int opt = 1;
     int addrlen = sizeof(address);
-    size_t writeBufSize = 16384;
     char *http200 = "HTTP/1.1 200 OK\r\nContent-Type: %s; charset=UTF-8\r\nTransfer-Encoding: chunked\r\n\r\n",
     *http404 = "HTTP/1.1 404 Not Found\r\n\r\n404",
     *http403 = "HTTP/1.1 403 Forbidden\r\n\r\n";
@@ -126,7 +126,7 @@ int main() {
         const char *type = get_mime_type(fileAddr);
         if (type == NULL || !isSafePath(fileAddr)) {
             write(client_socket, http403, strlen(http403));
-            print("(403)");
+            print("(403)\n");
             goto cleanup;
         }
         print("(200 ");
@@ -244,7 +244,7 @@ char *parseHost(int clientFd, char *readAddr, size_t memSize) {
 /*ChatGPT made this. I will make a better version in the loop for ASM
 TODO Add restricted file types instead of default case*/
 const char *get_mime_type(const char *path) {
-    const char *ext = strrchr(path, '.');
+    const char *tmp = 0, *ext = strrchr((tmp = strrchr(path, '/')) ? tmp : path, '.');
     if (ext == NULL) return "text/plain";
     ext++; // skip '.'
 
