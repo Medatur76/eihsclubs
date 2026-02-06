@@ -2,6 +2,8 @@
 
 [ ! -d "./bin" ] && mkdir "./bin"
 
+git pull
+
 gcc -c main.c -o ./bin/main.o
 
 as auto_update.asm -o ./bin/git_update.o
