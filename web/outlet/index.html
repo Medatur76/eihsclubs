@@ -395,7 +395,7 @@
         <div></div>
         <script id="latestArticleJS">
             const imgL = document.getElementById("latestArticle").appendChild(document.createElement("img")), imgA = document.getElementById("latestAvailable").appendChild(document.createElement("img"));
-            fetch("./api/articles_full.json", { method: "GET" }).then((response) => response.json()).then((json) => {
+            fetch("https://api.eihsclubs.com/outlet/articles_full.json", { method: "GET" }).then((response) => response.json()).then((json) => {
                 imgL.src = json[0].cover;
                 for (const article of json) {
                     if (article.available) {
