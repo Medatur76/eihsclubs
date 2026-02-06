@@ -120,22 +120,29 @@ int main() {
 
         char *subdomain = parseHost(client_socket);
 
+        char *fileAddr = format(readSize + 6 + strlen(subdomain), "web/%s/%s\0", subdomain, readAddr);
+
         if (strcasecmp(subdomain, "api") == 0 && method == POST) {
             //TODO Make this less hardcoded if I expand on this
             if (strcmp(readAddr, "pushEvent") == 0) {
-                print("POST web/api/pushEvent (");
-                if (!git_pull()) {
+                print("POST web/api/pushEvent ((git ");
+                signal(SIGCHLD, SIG_DFL);  // Restore default SIGCHLD handling for git_pull
+                int output = git_pull();
+                size_t size = snprintf(NULL, 0, "%d", output);
+                char *buff = format(size + 2, "%d)", output);
+                print(buff);
+                free(buff);
+                if (output != 0) {
                     write(client_socket, http500, strlen(http500));
-                    print("500)\n");
+                    print(" 500)\n");
                     errclose;
                 }
                 write(client_socket, http202, strlen(http202));
-                print("202)\n");
+                print(" 202)\n");
                 goto cleanup;
             }
         }
 
-        char *fileAddr = format(readSize + 6 + strlen(subdomain), "web/%s/%s\0", subdomain, readAddr);
         print(fileAddr);
 
         int filePtr = open(fileAddr, O_RDONLY);
