@@ -9,3 +9,4 @@ The website for all clubs at Energy Institute Highschool
 [Vex](https://vex.eihsclubs.com)
 
 test
+test2
