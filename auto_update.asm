@@ -13,7 +13,7 @@ git_pull:
     mov x8, #56
     mov x0, #-100
     adr x1, output_file
-    mov x2, #577
+    mov x2, #577    //Might add O_CLOEXEC later
     mov x3, #0644
     svc #0
     

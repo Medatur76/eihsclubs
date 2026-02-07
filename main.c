@@ -16,7 +16,7 @@
 #include <limits.h>
 
 #define errclose exit_code = EXIT_FAILURE; goto cleanup
-#define writeBufSize 16384
+#define writeBufSize 16777216 //16 KB
 
 int git_pull();
 
@@ -42,7 +42,7 @@ int main() {
     struct sockaddr_in address;
     int opt = 1;
     int addrlen = sizeof(address);
-    char *http200 = "HTTP/1.1 200 OK\r\nContent-Type: %s; charset=UTF-8\r\nTransfer-Encoding: chunked\r\n\r\n",
+    char *http200 = "HTTP/1.1 200 OK\r\nContent-Type: %s; charset=UTF-8\r\nTransfer-Encoding: chunked\r\nAccess-Control-Allow-Origin: https://%s.eihsclubs.com\r\n\r\n",
     *http202 = "HTTP/1.1 202 Accepted\r\nTransfer-Encoding: chunked\r\n\r\n",
     *http404 = "HTTP/1.1 404 Not Found\r\n\r\n404",
     *http403 = "HTTP/1.1 403 Forbidden\r\n\r\n",
@@ -125,9 +125,9 @@ int main() {
 
         char *fileAddr = format(readSize + 6 + strlen(subdomain), "web/%s/%s\0", subdomain, readAddr);
 
-        if (strcasecmp(subdomain, "api") == 0 && method == POST) {
+        if (strcasecmp(subdomain, "api") == 0) {
             //TODO Make this less hardcoded if I expand on this
-            if (strcmp(readAddr, "pushEvent") == 0) {
+            if (method == POST && strcmp(readAddr, "pushEvent") == 0) {
                 print("POST web/api/pushEvent ((git ");
                 signal(SIGCHLD, SIG_DFL);  // Restore default SIGCHLD handling for git_pull
                 int output = git_pull();
@@ -145,6 +145,15 @@ int main() {
                 }
                 writeFileToSocket(open("web/api/.hidden/pushEvent", O_RDONLY), client_socket);
                 goto cleanup;
+            } else if (method == GET) {
+                size_t targetSize = 1;
+                char *domainTarget = mmap(NULL, targetSize, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0), current;
+                while (targetSize <= readSize && (current = readAddr[targetSize-1]) != '/' && current != '\0') {
+                    domainTarget[targetSize-1] = current;
+                    domainTarget = mremap(domainTarget, targetSize, ++targetSize, MREMAP_MAYMOVE);
+                }
+                munmap(subdomain, strlen(subdomain));
+                subdomain = domainTarget;
             }
         }
 
@@ -180,7 +189,7 @@ int main() {
         print("(200 ");
         print((char *) type);
         print(")\n");
-        char *header = format(strlen(http200) + 25, http200, get_mime_type(fileAddr));
+        char *header = format(strlen(http200) + 25, http200, get_mime_type(fileAddr), subdomain);
         write(client_socket, header, strlen(header));
         free(header);
         exit_code = writeFileToSocket(filePtr, client_socket);
@@ -222,10 +231,10 @@ bool isSafePath(char *request) {
 
     // Folder must match prefix exactly
     if (strncmp(requestedFile, webFolder, len) != 0)
-        return 0;
+        return false;
 
     // Ensure boundary ("/" or end of string)
-    return requestedFile[len] == '\0' || requestedFile[len] == '/';
+    return true;
 }
 
 
