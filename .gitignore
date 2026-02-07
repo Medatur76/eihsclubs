@@ -2,3 +2,4 @@ bin/*
 .well-known
 run_protected.sh
 .vscode
+.hidden

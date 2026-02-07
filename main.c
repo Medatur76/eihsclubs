@@ -25,8 +25,9 @@ int git_pull();
 bool isSafePath(char *);
 char *parseHost(int);
 void print(char *);
-char *format(size_t, const char *__restrict format, ...);
+char *format(size_t, const char *__restrict, ...);
 const char *get_mime_type(const char *);
+int writeFileToSocket(int, int);
 
 typedef enum _Method {
     GET,
@@ -42,11 +43,11 @@ int main() {
     int opt = 1;
     int addrlen = sizeof(address);
     char *http200 = "HTTP/1.1 200 OK\r\nContent-Type: %s; charset=UTF-8\r\nTransfer-Encoding: chunked\r\n\r\n",
-    *http202 = "HTTP/1.1 202 Accepted\r\n\r\n",
+    *http202 = "HTTP/1.1 202 Accepted\r\nTransfer-Encoding: chunked\r\n\r\n",
     *http404 = "HTTP/1.1 404 Not Found\r\n\r\n404",
     *http403 = "HTTP/1.1 403 Forbidden\r\n\r\n",
     *http405 = "HTTP/1.1 405 Method Not Allowed\r\nAllow: GET, POST, HEAD\r\n\r\n",
-    *http500 = "500 Internal Server Error\r\n\r\n";
+    *http500 = "HTTP/1.1 500 Internal Server Error\r\nTransfer-Encoding: chunked\r\n\r\n";
 
     if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0) {
         perror("socket failed");
@@ -87,12 +88,14 @@ int main() {
             exit(EXIT_FAILURE);
         } else if (process != 0) continue;
         int exit_code = EXIT_SUCCESS;
-        char *readBuf = malloc(1), *writeBuf = malloc(writeBufSize);
+        char *readBuf = malloc(1);
         read(client_socket, readBuf, 1);
         Method method = readBuf[0] == 'G' ? GET : readBuf[0] == 'H' ? HEAD : readBuf[0] == 'P' ? POST : UNALLOWED;
         if (method == UNALLOWED) {
             write(client_socket, http405, strlen(http405));
-            print("Unallowed method requested (405)\n");
+            print("Unallowed method requested \"");
+            print(readBuf);
+            print("\" (405)\n");
             errclose;
         }
         while (readBuf[0] != '/') read(client_socket, readBuf, 1);
@@ -135,10 +138,12 @@ int main() {
                 if (output != 0) {
                     write(client_socket, http500, strlen(http500));
                     print(" 500)\n");
-                    errclose;
+                    exit_code = EXIT_FAILURE;
+                } else {
+                    write(client_socket, http202, strlen(http202));
+                    print(" 202)\n");
                 }
-                write(client_socket, http202, strlen(http202));
-                print(" 202)\n");
+                writeFileToSocket(open("web/api/.hidden/pushEvent", O_RDONLY), client_socket);
                 goto cleanup;
             }
         }
@@ -178,36 +183,15 @@ int main() {
         char *header = format(strlen(http200) + 25, http200, get_mime_type(fileAddr));
         write(client_socket, header, strlen(header));
         free(header);
-        int iRead;
-        while ((iRead = read(filePtr, writeBuf, writeBufSize)) > 0) {
-            char *chunkHeader = format(32, "%x\r\n", iRead);
-            write(client_socket, chunkHeader, strlen(chunkHeader));
-            int totalWritten = 0;
-            while (totalWritten < iRead) {
-                int iWritten = write(client_socket, writeBuf + totalWritten, iRead - totalWritten);
-                if (iWritten < 0) {
-                    perror("write to client");
-                    errclose;
-                }
-                totalWritten += iWritten;
-            }
-            write(client_socket, "\r\n", 2);
-            free(chunkHeader);
-        }
-        if (iRead < 0) {
-            perror("read file");
-            errclose;
-        }
-        write(client_socket, "0\r\n\r\n", 5);
+        exit_code = writeFileToSocket(filePtr, client_socket);
         cleanup:
         if (filePtr >= 0) close(filePtr);
         shutdown(client_socket, SHUT_WR);
         close(client_socket);
         munmap(readAddr, readSize);
         munmap(subdomain, strlen(subdomain));
-        free(fileAddr);
         free(readBuf);
-        free(writeBuf);
+        free(fileAddr);
         exit(exit_code);
     }
     close(server_fd);
@@ -219,6 +203,10 @@ int main() {
 bool isSafePath(char *request) {
     char webFolder[PATH_MAX];
     char requestedFile[PATH_MAX];
+
+    if (strstr(request, ".hidden") != NULL) {
+        return false;
+    }
 
     if (!realpath("web/", webFolder)) {
         perror("realpath(\"web/\", webFolder)");
@@ -306,4 +294,31 @@ const char *get_mime_type(const char *path) {
 
     //return "application/octet-stream";
     return NULL;
+}
+
+int writeFileToSocket(int fileFd, int socketFd) {
+    char *readBuf = malloc(1), *writeBuf = malloc(writeBufSize);
+    int iRead;
+    while ((iRead = read(fileFd, writeBuf, writeBufSize)) > 0) {
+        char *chunkHeader = format(32, "%x\r\n", iRead);
+        write(socketFd, chunkHeader, strlen(chunkHeader));
+        int totalWritten = 0;
+        while (totalWritten < iRead) {
+            int iWritten = write(socketFd, writeBuf + totalWritten, iRead - totalWritten);
+            if (iWritten < 0) {
+                perror("write to client");
+                return EXIT_FAILURE;
+            }
+            totalWritten += iWritten;
+        }
+        write(socketFd, "\r\n", 2);
+        free(chunkHeader);
+    }
+    if (iRead < 0) {
+        perror("read file");
+        return EXIT_FAILURE;
+    }
+    write(socketFd, "0\r\n\r\n", 5);
+    free(writeBuf);
+    return EXIT_SUCCESS;
 }
