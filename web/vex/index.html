@@ -337,7 +337,7 @@
                         async function getData() {
                             const table = document.querySelector('table[id="competition_table"] > tbody');
                             try {
-                                const response = await fetch("./events.json");
+                                const response = await fetch("https://api.eihsclubs.com/vex/events.json");
                                 const jsonData = await response.json();
                                 for (var i = 0; i < jsonData.length; i++) {
                                     const data = jsonData[i];
