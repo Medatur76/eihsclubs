@@ -79,6 +79,10 @@ git_process:
     mov x1, #1        // STDOUT_FILENO
     svc #0
 
+    mov x8, #24       // dup2 syscall
+    mov x1, #2        // STDERR_FILENO
+    svc #0
+
     mov x8, #221
     adr x0, path
     adr x1, argv
