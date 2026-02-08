@@ -50,6 +50,11 @@ div.right {
     width: 85vh;
 }
 
+.center {
+    display:grid;
+    justify-content:center;
+}
+
 div.left {
     position: absolute;
     width: 50%;
@@ -136,11 +141,8 @@ div.article_buttons a:first-child svg {
 }
 
 div.post_container {
-    position: absolute;
-    right: 16vh;
-    top: 8.25vh;
-    width: 60vh;
-    height: 85vh;
+    height: min(50cqw, 85cqh);
+    aspect-ratio: 64 / 85;
     background-color: rgba(89, 115, 185, 0.719);
     padding: 1vw;
     display: flex;
