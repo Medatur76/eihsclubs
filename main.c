@@ -23,6 +23,7 @@ int git_pull();
 //TODO Make this stop from going from one domain to another (e.g. eihsclubs.com/../outlet/index.html)
 //And fix the output in the console (e.g. web/eihsclubs/index(web/eihsclubs/index.html (200 text/html), and overlapped messages)
 //Add cache-control header
+//Add 103 header for outlet if nothing else
 bool isSafePath(char *);
 char *parseHost(int);
 void print(char *);
@@ -282,8 +283,6 @@ char *parseHost(int clientFd) {
     return output;
 }
 
-/*ChatGPT made this. I will make a better version in the loop for ASM
-TODO Add restricted file types instead of default case*/
 const char *get_mime_type(const char *path) {
     const char *tmp = 0, *ext = strrchr((tmp = strrchr(path, '/')) ? tmp : path, '.');
     if (ext == NULL) return "text/plain";
