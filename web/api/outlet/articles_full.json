@@ -2,5 +2,13 @@
     {
         "cover": "./img/GabeCoverRedesign.png",
         "available": false
+    },
+    {
+        "cover": "./img/placeeholderArticle.png",
+        "available": false
+    },
+    {
+        "cover": "./img/placeeholderArticle.png",
+        "available": true
     }
 ]

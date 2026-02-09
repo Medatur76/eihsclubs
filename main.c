@@ -16,12 +16,13 @@
 #include <limits.h>
 
 #define errclose exit_code = EXIT_FAILURE; goto cleanup
-#define writeBufSize 16777216 //16 KB
+#define writeBufSize 16777216 //16 MB
 
 int git_pull();
 
 //TODO Make this stop from going from one domain to another (e.g. eihsclubs.com/../outlet/index.html)
 //And fix the output in the console (e.g. web/eihsclubs/index(web/eihsclubs/index.html (200 text/html), and overlapped messages)
+//Add cache-control header
 bool isSafePath(char *);
 char *parseHost(int);
 void print(char *);
@@ -189,7 +190,7 @@ int main() {
         print("(200 ");
         print((char *) type);
         print(")\n");
-        char *header = format(strlen(http200) + 25, http200, get_mime_type(fileAddr), subdomain);
+        char *header = format(strlen(http200) + strlen(type) + strlen(subdomain), http200, type, subdomain);
         write(client_socket, header, strlen(header));
         free(header);
         exit_code = writeFileToSocket(filePtr, client_socket);

@@ -46,8 +46,8 @@ div.right {
     position: absolute;
     left: 0;
     bottom: 0;
-    height: 85vh;
     width: 85vh;
+    aspect-ratio: 1;
 }
 
 .center {
@@ -71,44 +71,44 @@ div.text {
 
 div.island {
     position: absolute;
-    --margin-top: 7vh;
-    --margin-side: 6.7vw;
+    --margin-top: min(7vh,3.5vw);
+    --margin-side: min(6.7vw,13.4vh);
     background-color: rgba(180, 200, 255, 0.25);
-    margin: var(--margin-top) var(--margin-side) var(--margin-top) calc(var(--margin-side) + 9vw);
+    margin: var(--margin-top) var(--margin-side) var(--margin-top) calc(var(--margin-side) + min(9vw,18vh));
     padding-top: calc(var(--margin-top) / 4);
     --height: calc(100vh - calc(var(--margin-top) * 2.25));
     height: var(--height);
     max-height: var(--height);
     min-height: var(--height);
-    width: calc(48vw - 2 * var(--margin-side));
+    width: calc(min(48vw,96vh) - 2 * var(--margin-side));
     right: 0;
     overflow-y: hidden;
 }
 
 div.island > #title {
     font-weight: 1000;
-    font-size: 3vw;
-    letter-spacing: 0.25vw;
-    margin: 0.875vh 0 0 0;
+    font-size: min(3vw,6vh);
+    letter-spacing: min(0.25vw,.5vh);
+    margin: min(0.875vh,1.75vh) 0 0 0;
 }
 
 div.island > #subtitle {
     font-weight: 400;
-    font-size: 1.2vw;
-    letter-spacing: 0.2vw;
-    margin: 1vh 0 0 0;
+    font-size: min(1.2vw,2.4vh);
+    letter-spacing: min(0.2vw,.4vh);
+    margin: min(1vh,.5vw) 0 0 0;
 }
 
 div#buttons {
     padding: 0 5%;
-    margin: 1vh 0 0 0;
+    margin: min(1vh,.5vw) 0 0 0;
 }
 
 div#buttons a svg {
     padding-top: 5%;
     text-decoration: none;
     color: rgb(255, 255, 255);
-    margin: 3vh 0 0 0;
+    margin: min(3vh,1.5vw) 0 0 0;
     font-weight: 420;
     width: 100%;
     height: auto;
@@ -119,8 +119,8 @@ div#buttons a:first-child svg {
 }
 
 div#socials a * {
-    height: 5vh;
-    margin: 7vh 4vh 0 4vh;
+    height: min(5vh,2.5vw);
+    margin: min(7vh,3.5vh) min(4vh,2vw) 0 min(4vh,2vw);
 }
 
 div#socials a {
@@ -129,15 +129,6 @@ div#socials a {
 
 div.article_buttons {
     background-color: rgba(180, 200, 255, 0.25);
-}
-
-div.article_buttons a svg {
-    margin-top: 11%;
-}
-
-div.article_buttons a:first-child svg {
-    margin-top: 5%;
-    scale: 110%;
 }
 
 div.post_container {
@@ -188,7 +179,7 @@ section#join div.left {
 
 section#join div.left div#title, section#join div.right h3, section#contact div.right div#title, section#sources div.left h1, section#donate div.right h1 {
     text-decoration: underline;
-    font-size: 3vw;
+    font-size: min(3vw,6vh);
     letter-spacing: 0.125vw;
 }
 
@@ -215,13 +206,9 @@ div.horizontal div:first-child {
 }
 
 img.stair_photo {
-    width: calc(36vw + 1vh);
+    width: 100%;
     position: relative;
-    bottom: 5vw;
-}
-
-section#join div.right a svg {
-    margin-top: 14vh;
+    bottom: min(5vw,10vh);
 }
 
 section#contact div.right div#title {
@@ -247,50 +234,50 @@ div.mugshot {
 }
 
 div.mugshot h3 {
-    font-size: 1.5vw;
+    font-size: min(1.5vw,3vh);
 }
 
 div.mugshot h4 {
-    font-size: 1vw;
+    font-size: min(1vw,2vh);
 }
 
 section#team > h1 {
-    font-size: 4vw;
-    padding-top: 3vh;
-    margin-left: 5vw;
+    font-size: min(4vw,8vh);
+    padding-top: min(3vh,1.5vw);
+    margin-left: min(5vw,10vh);
 }
 
 div.mugshot .photo {
     position: relative;
-    width: 30vw;
-    height: 30vw;
+    width: min(30vw,60vh);
+    aspect-ratio: 1;
     overflow: hidden;
     clip-path: url(#mugshot);
 }
 
 div.mugshot div.photo img {
-    width: calc(calc(1066 / 1363) * 100vw);
+    width: min(78vw,156vh);
 }
 
 div.top div.mugshot {
-    top: -10vh;
+    top: max(-10vh,-5vw);
 }
 
 div.bottom div.mugshot {
-    top: 30vh;
+    top: min(30vh,15vw);
 }
 
 div.top div.mugshot .photo {
-    top: 15vh;
+    top: min(15vh,7.5vw);
 }
 
 section#sources div.left h1 {
     position: absolute;
-    left: 10vw;
+    left: min(10vw,20vh);
 }
 
 section#sources div.right.text {
-    font-size: 2vw;
+    font-size: min(2vw,4vh);
 }
 
 section#donate div.right {
@@ -298,11 +285,11 @@ section#donate div.right {
 }
 
 div.funky_img {
-    --size: 40vw;
+    --size: min(40vw,80vh);
     height: var(--size);
     width: var(--size);
     clip-path:url(#bruhhh);
     position: relative;
-    top: .4vw;
-    left: .2vw;
+    top: min(.4vw,.8vh);
+    left: min(.2vw,.4vh);
 }
