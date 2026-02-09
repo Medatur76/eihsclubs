@@ -23,7 +23,6 @@ int git_pull();
 //TODO Make this stop from going from one domain to another (e.g. eihsclubs.com/../outlet/index.html)
 //And fix the output in the console (e.g. web/eihsclubs/index(web/eihsclubs/index.html (200 text/html), and overlapped messages)
 //Add cache-control header
-//Add 103 header for outlet if nothing else
 bool isSafePath(char *);
 char *parseHost(int);
 void print(char *);
@@ -125,8 +124,6 @@ int main() {
 
         char *subdomain = parseHost(client_socket);
 
-        char *fileAddr = format(readSize + 6 + strlen(subdomain), "web/%s/%s\0", subdomain, readAddr);
-
         if (strcasecmp(subdomain, "api") == 0) {
             //TODO Make this less hardcoded if I expand on this
             if (method == POST && strcmp(readAddr, "pushEvent") == 0) {
@@ -158,6 +155,8 @@ int main() {
                 subdomain = domainTarget;
             }
         }
+
+        char *fileAddr = format(readSize + 6 + strlen(subdomain), "web/%s/%s\0", subdomain, readAddr);
 
         print(fileAddr);
 
