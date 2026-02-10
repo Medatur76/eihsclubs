@@ -177,7 +177,7 @@ section#join div.left {
     text-align: center;
 }
 
-section#join div.left div#title, section#join div.right h3, section#contact div.right div#title, section#sources div.left h1, section#donate div.right h1 {
+section#join div.left div#title, section#join div.right p.header, section#contact div.right div#title, section#sources div.left h1, section#donate div.right h1 {
     text-decoration: underline;
     font-size: min(3vw,6vh);
     letter-spacing: 0.125vw;
@@ -233,11 +233,11 @@ div.mugshot {
     position: absolute;
 }
 
-div.mugshot h3 {
+div.mugshot .name {
     font-size: min(1.5vw,3vh);
 }
 
-div.mugshot h4 {
+div.mugshot .title {
     font-size: min(1vw,2vh);
 }
 

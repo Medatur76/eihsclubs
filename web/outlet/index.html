@@ -2,20 +2,17 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
+        <meta name="description" content="The Outlet club at Energy Institute Highschool. A student run newspaper club">
         <title>The Outlet - School News</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="preload" href="./img/DSC0435.jpg" as="image">
-        <link rel="preload" href="./img/IMG_2691.jpg" as="image">
-        <link rel="preload" href="./img/IMG_2651.jpg" as="image">
-        <link rel="preload" href="./img/IMG_2654.jpg" as="image">
-        <link rel="preload" href="./img/IMG_1225.jpg" as="image">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100..900&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="style.css">
+        <link rel="preload" href="./img/stair.webp" as="image" fetchpriority="high">
         <meta property="og:title" content="The Outlet | EIHS">
         <meta property="og:description" content="Welcome to The Outlet, our school's student-run newspaper club!">
-        <meta property="og:image" content="https://outlet.eihsclubs.com/img/IMG_2654.jpg">
+        <meta property="og:image" content="https://outlet.eihsclubs.com/img/IMG_2654.webp">
         <meta name="twitter:card" content="summary_large_image">
         <meta property="og:url" content="https://outlet.eihsclubs.com">
     </head>
@@ -51,14 +48,14 @@
             </clipPath>
         </svg>
         <div class="scroll_container">
-            <section id="top">
+            <section id="top" role="main">
                 <div class="left">
                     <svg class="main" viewbox="0 0 1066 1066" fill="#4685e9">
                         <clipPath id="mainCP">
                             <circle cx="50%" cy="50%" r="49%" />
                         </clipPath>
                         <circle cx="44%" cy="74%" r="50%" />
-                        <image y="-190" href="./img/stair.jpeg" style="clip-path: url(#mainCP);transform: translate(-6%,24%);" />
+                        <image y="-190" href="./img/stair.webp" style="clip-path: url(#mainCP);transform: translate(-6%,24%);" />
                     </svg>
                 </div>
                 <div class="right">
@@ -66,28 +63,28 @@
                         <p id="title">The Outlet</p>
                         <p id="subtitle">Magazine Club @ Energy Institute HS</p>
                         <div id="buttons">
-                            <a href="#about">
+                            <a href="#about" aria-label="About The Club">
                                 <!--Will replace this with a replace keyword in the actual serverside code-->
                                 <svg fill="#FFFFFF" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 150 20">
                                     <path d="m3 0c-2 0-3 1-3 3l0 14c0 2 1 3 3 3h144c2 0 3-1 3-3v-14c0-2-1-3-3-3h-144m0 1h144c1.5 0 2 .5 2 2v14c0 1.5-.5 2-2 2h-144c-1.5 0-2-.5-2-2v-14c0-1.5.5-2 2-2z" />
                                     <text fill="rgba(255, 255, 255, 1)" font-size="calc(2em/5)" x="50%" y="55%" text-anchor="middle" dominant-baseline="middle" style="letter-spacing: 0.05vw;word-spacing: 0.1vw;">About The Club</text>
                                 </svg>
                             </a><br>
-                            <a href="#team">
+                            <a href="#team" aria-label="Our Team">
                                 <!--Will replace this with a replace keyword in the actual serverside code-->
                                 <svg fill="#FFFFFF" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 150 20">
                                     <path d="m3 0c-2 0-3 1-3 3l0 14c0 2 1 3 3 3h144c2 0 3-1 3-3v-14c0-2-1-3-3-3h-144m0 1h144c1.5 0 2 .5 2 2v14c0 1.5-.5 2-2 2h-144c-1.5 0-2-.5-2-2v-14c0-1.5.5-2 2-2z" />
                                     <text fill="rgba(255, 255, 255, 1)" font-size="calc(2em/5)" x="50%" y="55%" text-anchor="middle" dominant-baseline="middle" style="letter-spacing: 0.05vw;word-spacing: 0.1vw;">Our Team</text>
                                 </svg>
                             </a><br>
-                            <a href="#join">
+                            <a href="#join" aria-label="Join The Club">
                                 <!--Will replace this with a replace keyword in the actual serverside code-->
                                 <svg fill="#FFFFFF" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 150 20">
                                     <path d="m3 0c-2 0-3 1-3 3l0 14c0 2 1 3 3 3h144c2 0 3-1 3-3v-14c0-2-1-3-3-3h-144m0 1h144c1.5 0 2 .5 2 2v14c0 1.5-.5 2-2 2h-144c-1.5 0-2-.5-2-2v-14c0-1.5.5-2 2-2z" />
                                     <text fill="rgba(255, 255, 255, 1)" font-size="calc(2em/5)" x="50%" y="55%" text-anchor="middle" dominant-baseline="middle" style="letter-spacing: 0.05vw;word-spacing: 0.1vw;">Join The Club</text>
                                 </svg>
                             </a><br>
-                            <a href="#contact">
+                            <a href="#contact" aria-label="Contact">
                                 <!--Will replace this with a replace keyword in the actual serverside code-->
                                 <svg fill="#FFFFFF" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 150 20">
                                     <path d="m3 0c-2 0-3 1-3 3l0 14c0 2 1 3 3 3h144c2 0 3-1 3-3v-14c0-2-1-3-3-3h-144m0 1h144c1.5 0 2 .5 2 2v14c0 1.5-.5 2-2 2h-144c-1.5 0-2-.5-2-2v-14c0-1.5.5-2 2-2z" />
@@ -97,19 +94,19 @@
                         </div>
                         <div id="socials">
                             <!--Need to edit these cuz their sooooo offcentered-->
-                            <a href="">
+                            <a href="" aria-label="Instagram">
                                 <svg data-name="Layer 1" preserveAspectRatio="xMidYMid meet" version="1.0" viewBox="-0.0 -0.0 212.3 212.3" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" zoomAndPan="magnify">
                                     <g id="change1_1">
                                         <path d="M62.16.73c-11.29.53-19,2.34-25.74,4.98-6.98,2.72-12.89,6.36-18.77,12.27-5.89,5.91-9.51,11.83-12.2,18.82-2.61,6.76-4.38,14.47-4.88,25.77C.07,73.88-.04,77.49.01,106.31c.05,28.81.18,32.43.72,43.75.54,11.29,2.34,18.99,4.98,25.74,2.72,6.98,6.36,12.88,12.27,18.77,5.91,5.89,11.83,9.5,18.82,12.2,6.75,2.61,14.47,4.39,25.76,4.88,11.32.5,14.93.61,43.74.55,28.82-.05,32.43-.18,43.75-.72,11.29-.54,18.99-2.35,25.74-4.98,6.98-2.73,12.89-6.36,18.77-12.27,5.88-5.91,9.5-11.83,12.2-18.82,2.61-6.75,4.39-14.47,4.88-25.75.49-11.32.61-14.94.56-43.75-.05-28.81-.19-32.42-.72-43.74-.54-11.3-2.34-19-4.98-25.75-2.73-6.98-6.36-12.88-12.27-18.77-5.91-5.88-11.83-9.51-18.82-12.2-6.75-2.61-14.47-4.39-25.76-4.88C138.33.07,134.71-.04,105.9.01c-28.81.05-32.42.18-43.74.72M63.4,192.54c-10.34-.45-15.96-2.17-19.71-3.61-4.96-1.92-8.49-4.22-12.22-7.91-3.72-3.71-6.02-7.24-7.96-12.18-1.45-3.74-3.2-9.35-3.69-19.7-.53-11.18-.65-14.54-.7-42.87-.05-28.32.05-31.68.54-42.87.44-10.34,2.17-15.96,3.61-19.7,1.92-4.96,4.21-8.49,7.91-12.22,3.71-3.72,7.24-6.02,12.19-7.96,3.74-1.46,9.35-3.2,19.69-3.69,11.19-.53,14.54-.64,42.87-.7,28.33-.06,31.69.04,42.88.54,10.34.45,15.96,2.16,19.7,3.61,4.96,1.92,8.5,4.2,12.22,7.91,3.72,3.71,6.03,7.23,7.96,12.19,1.46,3.73,3.2,9.35,3.69,19.68.53,11.19.65,14.55.7,42.87.05,28.33-.05,31.69-.54,42.87-.45,10.34-2.17,15.97-3.61,19.71-1.92,4.95-4.21,8.49-7.92,12.21-3.71,3.71-7.23,6.02-12.19,7.96-3.73,1.46-9.35,3.2-19.68,3.69-11.19.53-14.54.65-42.88.7-28.32.05-31.68-.05-42.87-.54M149.9,49.39c.01,7.03,5.73,12.72,12.75,12.7,7.03-.01,12.72-5.72,12.71-12.75-.01-7.03-5.73-12.72-12.76-12.71-7.03.01-12.72,5.73-12.71,12.75M51.62,106.21c.06,30.09,24.5,54.43,54.58,54.37,30.09-.06,54.44-24.49,54.38-54.58-.06-30.08-24.5-54.43-54.59-54.38-30.08.06-54.43,24.5-54.37,54.59M70.73,106.17c-.03-19.53,15.77-35.4,35.3-35.43,19.53-.04,35.4,15.76,35.44,35.3.04,19.53-15.77,35.4-35.3,35.43-19.53.04-35.4-15.77-35.43-35.3" fill="#fff"/>
                                     </g>
                                 </svg>
                             </a>
-                            <a href="">
+                            <a href="" aria-label="Facebook">
                                 <svg fill="#FFFFFF" viewbox="0 0 1 1">
                                     <path d="m.735 0v.165h-.109c-.033 0-.058.029-.058.058v.111h.17l-.028.162h-.142v.504h-.198v-.504h-.108v-.163h.108v-.111c0-.14.06-.222.256-.222z" />
                                 </svg>
                             </a>
-                            <a href="">
+                            <a href="" aria-label="Email">
                                 <svg fill="#FFFFFF" viewbox="0 0 1 1" style="scale: 150%;">
                                     <path d="M.088.173H.912C.953.173 1 .214 1 .261V.732C1 .773.959.82.912.82H.088C.047.82-0 .779-0 .732V.261C-0 .22.041.173.088.173M.108.236.498.511C.501.513.504.513.507.511L.897.236M.064.705.3.46C.304.456.304.452.3.449L.064.279M.936.279.7.449C.696.453.696.457.7.46L.936.705M.108.753H.895L.652.498C.648.493.643.492.634.498L.54.566C.514.583.492.583.466.566L.372.498C.363.492.358.493.354.498Z" />
                                 </svg>
@@ -121,27 +118,27 @@
             <section id="article">
                 <div class="left article_buttons">
                     <div style="display: grid;justify-content: center;justify-items: center;align-content: space-around;width: 100%;height: 75%;position: absolute;bottom: 15vh;">
-                        <a href="">
+                        <a href="" aria-label="Buy Article">
                             <svg fill="#b80b0b" xmlns="http://www.w3.org/2000/svg" height="13vh" width="100%" viewbox="0 0 83 15">
                                 <path d="m6 0c-8 0-8 15 0 15h70c8 0 8-15 0-15z" />
                                 <text fill="#FFFFFF" font-size="calc(1em/2.5)" font-weight="bold" x="50%" y="55%" text-anchor="middle" dominant-baseline="middle">Buy Article</text>
                             </svg>
                         </a>
-                        <a href="#articles">
+                        <a href="#articles" aria-label="View Past Articles">
                             <!--Will replace this with a replace keyword in the actual serverside code-->
                             <svg fill="#FFFFFF" xmlns="http://www.w3.org/2000/svg" height="8vh" width="100%" viewbox="0 0 150 20">
                                 <path d="m3 0c-2 0-3 1-3 3l0 14c0 2 1 3 3 3h144c2 0 3-1 3-3v-14c0-2-1-3-3-3h-144m0 1h144c1.5 0 2 .5 2 2v14c0 1.5-.5 2-2 2h-144c-1.5 0-2-.5-2-2v-14c0-1.5.5-2 2-2z" />
                                 <text fill="rgba(255, 255, 255, 1)" font-size="calc(2em/5)" font-weight="semibold" x="50%" y="55%" text-anchor="middle" dominant-baseline="middle" style="letter-spacing: 0.05vw;word-spacing: 0.1vw;">View Past Articles</text>
                             </svg>
                         </a>
-                        <a href="#souces">
+                        <a href="#souces" aria-label="Sources">
                             <!--Will replace this with a replace keyword in the actual serverside code-->
                             <svg fill="#FFFFFF" xmlns="http://www.w3.org/2000/svg" height="8vh" width="100%" viewbox="0 0 150 20">
                                 <path d="m3 0c-2 0-3 1-3 3l0 14c0 2 1 3 3 3h144c2 0 3-1 3-3v-14c0-2-1-3-3-3h-144m0 1h144c1.5 0 2 .5 2 2v14c0 1.5-.5 2-2 2h-144c-1.5 0-2-.5-2-2v-14c0-1.5.5-2 2-2z" />
                                 <text fill="rgba(255, 255, 255, 1)" font-size="calc(2em/5)" font-weight="semibold" x="50%" y="55%" text-anchor="middle" dominant-baseline="middle" style="letter-spacing: 0.05vw;word-spacing: 0.1vw;">Sources</text>
                             </svg>
                         </a>
-                        <a href="#donate">
+                        <a href="#donate" aria-label="Donate">
                             <!--Will replace this with a replace keyword in the actual serverside code-->
                             <svg fill="#FFFFFF" xmlns="http://www.w3.org/2000/svg" height="8vh" width="100%" viewbox="0 0 150 20">
                                 <path d="m3 0c-2 0-3 1-3 3l0 14c0 2 1 3 3 3h144c2 0 3-1 3-3v-14c0-2-1-3-3-3h-144m0 1h144c1.5 0 2 .5 2 2v14c0 1.5-.5 2-2 2h-144c-1.5 0-2-.5-2-2v-14c0-1.5.5-2 2-2z" />
@@ -167,7 +164,7 @@
                         </svg>
                         <div style="clip-path: url(#sophia);position: absolute;left:-2.5vw;bottom: -5vh;height: 100vh;width: 95vh;overflow:hidden;">
                             <!--Gotta fix this img-->
-                            <img style="height:125vh;width:auto;position:absolute;top:-5vh;right:13vh;" src="./img/IMG_2681.jpg" alt="Sophia giving a speach (?)" />
+                            <img style="height:125vh;width:auto;position:absolute;top:-5vh;right:13vh;" src="./img/IMG_2681.webp" alt="Sophia giving a speach" />
                         </div>
                     </div>
                 </div>
@@ -176,7 +173,7 @@
                         <path d="m0 1h1" />
                     </svg>
                     <div style="width: 40vw;position: absolute;left:5vw;">
-                        <h3 style="font-size: 3vh;font-weight: 400;letter-spacing: 0.5vh;">Welcome to The Outlet, our school's student-run newspaper club! We're dedicated to creating a space where students can share their voices, celebrate our community, and discover stories that inspire and entertain.<br><br>Whether it's uncovering the latest campus news, highlighting student achievements, or sparking conversations about topics that matter, The Outlet gives every student a platform to be heard. Our goal is to connect, inform, and inspire through creativity, collaboration, and storytelling.<br><br>Join us as we write the stories that shape our school — one article, one idea, and one voice at a time.</h3>
+                        <p style="font-size: 3vh;font-weight: 400;letter-spacing: 0.5vh;">Welcome to The Outlet, our school's student-run newspaper club! We're dedicated to creating a space where students can share their voices, celebrate our community, and discover stories that inspire and entertain.<br><br>Whether it's uncovering the latest campus news, highlighting student achievements, or sparking conversations about topics that matter, The Outlet gives every student a platform to be heard. Our goal is to connect, inform, and inspire through creativity, collaboration, and storytelling.<br><br>Join us as we write the stories that shape our school — one article, one idea, and one voice at a time.</p>
                     </div>
                     <svg viewbox="0 0 1 2" height="1vh" style="position:absolute;left:1vw;bottom:3vh;" width="48vw" fill="none" stroke="#FFFFFF" stroke-width="1" preserveAspectRatio="none">
                         <path d="m0 1h1" />
@@ -191,66 +188,66 @@
                             <rect x="0" y="0" width="1" height="1" />
                         </svg>
                         <div class="photo">
-                            <img src="./img/stair.jpeg" style="translate: -49% -28%;scale: 78.75%;" alt="Sophia's mugshot" />
+                            <img src="./img/stair.webp" style="translate: -49% -28%;scale: 78.75%;" alt="Sophia's mugshot" />
                         </div>
-                        <h3>Sophia</h3>
-                        <h4>Club & Editorial Lead</h4>
+                        <p class="name">Sophia</p>
+                        <p class="title">Club & Editorial Lead</p>
                     </div>
                     <div class="mugshot" style="left: 30vw;">
                         <svg fill="rgba(181, 181, 255, 0.2)" class="photo" style="position: absolute;left: max(-1.5vw,-3vh);" viewbox="0 0 1 1">
                             <rect x="0" y="0" width="1" height="1" />
                         </svg>
                         <div class="photo">
-                            <img src="./img/stair.jpeg" style="translate: -39% -15%;scale: 78.75%;" alt="Oscar's mugshot" />
+                            <img src="./img/stair.webp" style="translate: -39% -15%;scale: 78.75%;" alt="Oscar's mugshot" />
                         </div>
-                        <h3>Oscar</h3>
-                        <h4>Photography Lead</h4>
+                        <p class="name">Oscar</p>
+                        <p class="title">Photography Lead</p>
                     </div>
                     <div class="mugshot" style="left: 60vw;">
                         <svg fill="rgba(181, 181, 255, 0.2)" class="photo" style="position: absolute;left: max(-1.5vw,-3vh);" viewbox="0 0 1 1">
                             <rect x="0" y="0" width="1" height="1" />
                         </svg>
                         <div class="photo">
-                            <img src="./img/stair.jpeg" style="translate: -36% -27%;scale: 78.75%;" alt="Rowan's mugshot" />
+                            <img src="./img/stair.webp" style="translate: -36% -27%;scale: 78.75%;" alt="Rowan's mugshot" />
                         </div>
-                        <h3>Rowan</h3>
-                        <h4>Social & Finance Lead</h4>
+                        <p class="name">Rowan</p>
+                        <p class="title">Social & Finance Lead</p>
                     </div>
                 </div>
                 <div class="bottom">
                     <div class="mugshot" style="left: 15vw;">
-                        <h3>Cady</h3>
-                        <h4>Design Co-Lead</h4>
+                        <p class="name">Cady</p>
+                        <p class="title">Design Co-Lead</p>
                         <div style="position: relative;top: max(-14vh,-7vw);">
                             <svg fill="rgba(181, 181, 255, 0.2)" class="photo" style="position: absolute;left: max(-1.5vw,-3vh);" viewbox="0 0 1 1">
                                 <rect x="0" y="0" width="1" height="1" />
                             </svg>
                             <div class="photo">
-                                <img src="./img/stair.jpeg" style="translate: -21% -28%;scale: 78.75%;" alt="Cady's mugshot" />
+                                <img src="./img/stair.webp" style="translate: -21% -28%;scale: 78.75%;" alt="Cady's mugshot" />
                             </div>
                         </div>
                     </div>
                     <div class="mugshot" style="left: 45vw;">
-                        <h3>Gabriel</h3>
-                        <h4>Design Co-Lead</h4>
+                        <p class="name">Gabriel</p>
+                        <p class="title">Design Co-Lead</p>
                         <div style="position: relative;top: max(-14vh,-7vw);">
                             <svg fill="rgba(181, 181, 255, 0.2)" class="photo" style="position: absolute;left: max(-1.5vw,-3vh);" viewbox="0 0 1 1">
                                 <rect x="0" y="0" width="1" height="1" />
                             </svg>
                             <div class="photo">
-                                <img src="./img/stair.jpeg" style="translate: -22% -16%;scale: 78.75%;" alt="Gabriel's mugshot" />
+                                <img src="./img/stair.webp" style="translate: -22% -16%;scale: 78.75%;" alt="Gabriel's mugshot" />
                             </div>
                         </div>
                     </div>
                     <div class="mugshot" style="left: 75vw;">
-                        <h3>Maria</h3>
-                        <h4>Writing Lead</h4>
+                        <p class="name">Maria</p>
+                        <p class="title">Writing Lead</p>
                         <div style="position: relative;top: max(-14vh,-7vw);">
                             <svg fill="rgba(181, 181, 255, 0.2)" class="photo" style="position: absolute;left: max(-1.5vw,-3vh);" viewbox="0 0 1 1">
                                 <rect x="0" y="0" width="1" height="1" />
                             </svg>
                             <div class="photo">
-                                <img src="./img/stair.jpeg" style="translate: -8% -28%;scale: 78.75%;" alt="Maria's mugshot" />
+                                <img src="./img/stair.webp" style="translate: -8% -28%;scale: 78.75%;" alt="Maria's mugshot" />
                             </div>
                         </div>
                     </div>
@@ -262,25 +259,25 @@
                     <div class="center">
                         <div class="horizontal">
                             <div style="width: min(18vw,36vh);overflow: hidden;aspect-ratio: 1;">
-                                <img src="./img/IMG_2691.jpg" style="width:min(26vw,52vh);transform: translateY(-35%);" alt="Meeting photo #1" />
+                                <img src="./img/IMG_2691.webp" style="width:min(26vw,52vh);transform: translateY(-35%);" alt="Meeting photo #1" />
                             </div>
                             <div style="width: min(18vw,36vh);overflow: hidden;aspect-ratio: 1;">
-                                <img src="./img/IMG_2682.jpg" style="height:min(18vw,36vh);" alt="Meeting photo #2" />
+                                <img src="./img/IMG_2682.webp" style="height:min(18vw,36vh);" alt="Meeting photo #2" />
                             </div>
                         </div>
                         <div style="width: min(36.5vw,73vh);height: min(18vw,36vh);overflow-y: hidden;">
-                            <img class="stair_photo" src="img/DSC0435.jpg" alt="Indoor team stair photo" />
+                            <img class="stair_photo" src="img/DSC0435.webp" alt="Indoor team stair photo" />
                         </div>
                     </div>
                 </div>
                 <div class="right text">
-                    <a href="" style="display: block; margin-top: min(8vh,4vw);">
+                    <a href="" style="display: block; margin-top: min(8vh,4vw);" aria-label="Click Here to Join!">
                         <svg fill="#FF0000" xmlns="http://www.w3.org/2000/svg" height="8em" width="100%" viewbox="0 0 83 18">
                             <path d="m6 0c-8 0-8 18 0 18h70c8 0 8-18 0-18z" />
                             <text fill="#FFFFFF" font-size="calc(1em/2)" x="50%" y="50%" text-anchor="middle" dominant-baseline="middle">Click Here!</text>
                         </svg>
                     </a>
-                    <h3 style="margin-top: min(2vh,1vw);">Roles:</h3>
+                    <p class="header" style="margin-top: min(2vh,1vw);">Roles:</p>
                     <div class="text-container" style="font-size: min(1.5vw,3vh); padding: 0 min(0.5vw,1vh); width: 80%; margin-left: 10%;">
                         <p style="text-align: left; text-align-last: center; line-height: 1.2;">
                             <strong>Writers:</strong> We both write and decide on the article topics
@@ -305,11 +302,11 @@
             <section id="contact">
                 <div class="left text">
                     <!--Should change this to fill the section more when height > width-->
-                    <h2 style="font-size: min(2.5vw,5vh);">Leads:</h2>
-                    <h4 style="font-size: min(1.5vw,3vh);"><br>Club Founders:</h4>
-                    <h5 style="font-size: min(1vw,2vh);">Teacher: Ms. Thomas @ Jocelyn.Thomas@houstonisd.org<br><br>Student: Sophia @ s1847508@online.houstonisd.org</h5><br><br>
-                    <h4 style="font-size: min(1.5vw,3vh);">Student Leads:</h4>
-                    <h5 style="font-size: min(1vw,2vh);">Writing Lead: Maria @ s1897024@online.houstonisd.org<br><br>Photography Lead: Oscar @ s1842695@online.houstonisd.org<br><br>Editing Lead: Sophia @ s1847508@online.houstonisd.org<br><br>Social Media Lead: Rowan @ s2103421@online.houstonisd.org<br><br>Design Lead: Cady @ s1780147@online.houstonisd.org<br><br>Interview Lead: TBD @ s1835695@online.houstonisd.org<br><br>Finance Lead: Rowan @ s2103421@online.houstonisd.org</h5>
+                    <p style="font-size: min(2.5vw,5vh);">Leads:</p>
+                    <p style="font-size: min(1.5vw,3vh);"><br>Club Founders:</p>
+                    <p style="font-size: min(1vw,2vh);">Teacher: Ms. Thomas @ Jocelyn.Thomas@houstonisd.org<br><br>Student: Sophia @ s1847508@online.houstonisd.org</p><br><br>
+                    <p style="font-size: min(1.5vw,3vh);">Student Leads:</p>
+                    <p style="font-size: min(1vw,2vh);">Writing Lead: Maria @ s1897024@online.houstonisd.org<br><br>Photography Lead: Oscar @ s1842695@online.houstonisd.org<br><br>Editing Lead: Sophia @ s1847508@online.houstonisd.org<br><br>Social Media Lead: Rowan @ s2103421@online.houstonisd.org<br><br>Design Lead: Cady @ s1780147@online.houstonisd.org<br><br>Interview Lead: TBD @ s1835695@online.houstonisd.org<br><br>Finance Lead: Rowan @ s2103421@online.houstonisd.org</p>
                 </div>
                 <div class="right">
                     <div id="title">Contact</div>
@@ -317,7 +314,7 @@
                         <rect x="0" y="0" width="100%" height="100%" fill="black" opacity="0.85"/>
                     </svg>
                     <div style="position:absolute;bottom:0;right:0;height:min(72vh,36vw);width:min(47.67vw,95.34vh);clip-path:url(#connordoesworksometimes);">
-                        <img src="./img/IMG_2654.jpg" style="height:min(82vh,41vw);width:auto;position:absolute;bottom:max(-10vh,-5vw);right:max(-15vw,-30vh);transform:scaleX(-1);">
+                        <img src="./img/IMG_2654.webp" alt="Magazine member showcasing a prior article to a third-party" style="height:min(82vh,41vw);width:auto;position:absolute;bottom:max(-10vh,-5vw);right:max(-15vw,-30vh);transform:scaleX(-1);">
                     </div>
                 </div>
             </section>
@@ -328,15 +325,15 @@
                         <rect x="0" y="0" width="100%" height="100%" fill="rgba(0,0,0,0.26)" opacity="0.85"/>
                     </svg>
                     <div style="position:absolute;left: max(-5vw,-10vh);bottom: max(-5vw,-10vh);width: min(40vw,80vh);aspect-ratio:1;overflow:hidden;clip-path:url(#cornerPhoto);transform:scale(115%, 105%);">
-                        <img src="./img/IMG_1225.jpg" style="position:relative;top: max(-11vw,-22vh);width: min(40vw,80vh);"/>
+                        <img src="./img/IMG_1225.webp" alt="A decorated corner of a wall" style="position:relative;top: max(-11vw,-22vh);width: min(40vw,80vh);"/>
                     </div>
                 </div>
                 <div class="right text">
                     <div style="padding: 8% 20%;padding-top: 15%;">Our club runs out of Energy Institute High School in HISD, we thank our school for giving us the opportunity to express our creativity and share our passion with our school</div>
                     <div class="horizontal" style="scale: 90%;padding: 0 10%;">
-                        <img src="./img/HoustonISD_seal.svg" style="width:min(15vw,30vh);" />
+                        <img src="./img/HoustonISD_seal.svg" alt="HoustonISD's seal" style="width:min(15vw,30vh);" />
                         <div style="height:min(15vw,30vh);overflow: hidden;">
-                            <img src="./img/file.svg" style="width: min(45vw,90vh);position: relative;top: max(-15vw,-30vh);left: max(-10vw,-20vh);"/>
+                            <img src="./img/file.svg" alt="Energy Institute Highschool's logo" style="width: min(45vw,90vh);position: relative;top: max(-15vw,-30vh);left: max(-10vw,-20vh);"/>
                         </div>
                     </div>
                 </div>
@@ -347,7 +344,7 @@
                     <!--Should be changed to be simpler-->
                     <div style="width:min(25vw,50vh);aspect-ratio:1;display:flex;align-items:center;scale:150%;">
                         <div class="funky_img">
-                            <img style="width:var(--size);position:relative;top:max(-11vw,-22vh);left:max(-7.5vw,-15vh);scale:65%;" src="./img/IMG_2651.jpg" />
+                            <img style="width:var(--size);position:relative;top:max(-11vw,-22vh);left:max(-7.5vw,-15vh);scale:65%;" alt="Magazine member showcasing a prior article to the camera" src="./img/IMG_2651.webp" />
                         </div>
                     </div>
                 </div>
@@ -377,7 +374,7 @@
             <section id="purchase">
                 <div class="left text">
                     <div style="font-size: min(8vh,4vw);font-weight: bold;margin-top: min(12vh,6vw);margin-bottom: min(6vh,3vw);letter-spacing: min(1.25vh,.625vw);">Purchase</div>
-                    <a href="">
+                    <a href="" aria-label="Buy Our Digital Article">
                         <svg fill="#b80b0b" xmlns="http://www.w3.org/2000/svg" height="min(14vh,7vw)" width="100%" viewbox="0 0 83 15">
                             <path d="m6 0c-8 0-8 15 0 15h70c8 0 8-15 0-15z" />
                             <text fill="#f1c7c8" font-size="calc(1em/3.25)" font-weight="bold" x="50%" y="45%" text-anchor="middle" dominant-baseline="middle">Buy Our Digital Article</text>
@@ -385,7 +382,7 @@
                         </svg>
                     </a>
                     <div style="font-size: min(2.6vh,1.3vw);font-weight: bold;letter-spacing: min(.2vh,.1vw);fill: #d3ddeede;margin-bottom: min(6vh,3vw);margin-top: min(4vh,2vw);">News from our school to your<br>screen!</div>
-                    <a href="">
+                    <a href="" aria-label="Buy Our Physical Article">
                         <svg fill="#b80b0b" xmlns="http://www.w3.org/2000/svg" height="min(12vh,6vw)" width="100%" viewbox="0 0 83 15">
                             <path d="m6 0c-8 0-8 15 0 15h70c8 0 8-15 0-15z" />
                             <text fill="#f1c7c8" font-size="calc(1em/3.25)" font-weight="bold" x="50%" y="45%" text-anchor="middle" dominant-baseline="middle">Buy Our Physical Article</text>
@@ -401,17 +398,22 @@
         </div>
         <!--Scroll Icon-->
         <div></div>
-        <script id="latestArticleJS">
+        <script id="latestArticleJS" defer>
             const imgL = document.getElementById("latestArticle").appendChild(document.createElement("img")),
             imgA = document.getElementById("latestAvailable").appendChild(document.createElement("img")),
             imgSs = document.getElementById("otherArticles").children;
-            fetch("https://api.eihsclubs.com/outlet/articles_full.json", { method: "GET" }).then((response) => response.json()).then((json) => {
-                imgL.src = json[0].cover;
-                imgSs[0].appendChild(document.createElement("img")).src = json[1].cover;
-                imgSs[1].appendChild(document.createElement("img")).src = json[2].cover;
+            fetch("./api/articles_full.json", { method: "GET" }).then((response) => response.json()).then((json) => {
+                imgL.src = "./img/" + json[0].cover;
+                imgL.alt = "Latest magazine's cover";
+                var img;
+                (img = imgSs[0].appendChild(document.createElement("img"))).src = "./img/" + json[1].cover;
+                img.alt = "Second latest magazine cover";
+                (img = imgSs[1].appendChild(document.createElement("img"))).src = "./img/" + json[2].cover;
+                img.alt = "Third latest magazine cover";
                 for (const article of json) {
                     if (article.available) {
-                        imgA.src = article.cover;
+                        imgA.src = "./img/" + article.cover;
+                        imgA.alt = "Latest purchasable magazine's cover";
                         return;
                     }
                 }

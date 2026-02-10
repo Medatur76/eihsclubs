@@ -1,0 +1,14 @@
+[
+    {
+        "cover": "GabeCoverRedesign.webp",
+        "available": false
+    },
+    {
+        "cover": "placeholderArticle.png",
+        "available": false
+    },
+    {
+        "cover": "placeholderArticle.png",
+        "available": true
+    }
+]

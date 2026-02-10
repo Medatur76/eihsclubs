@@ -43,7 +43,7 @@ int main() {
     struct sockaddr_in address;
     int opt = 1;
     int addrlen = sizeof(address);
-    char *http200 = "HTTP/1.1 200 OK\r\nContent-Type: %s; charset=UTF-8\r\nTransfer-Encoding: chunked\r\nAccess-Control-Allow-Origin: https://%s.eihsclubs.com\r\n\r\n",
+    char *http200 = "HTTP/1.1 200 OK\r\nContent-Type: %s; charset=UTF-8\r\nTransfer-Encoding: chunked\r\nAccess-Control-Allow-Origin: *\r\n\r\n",
     *http202 = "HTTP/1.1 202 Accepted\r\nTransfer-Encoding: chunked\r\n\r\n",
     *http404 = "HTTP/1.1 404 Not Found\r\n\r\n404",
     *http403 = "HTTP/1.1 403 Forbidden\r\n\r\n",
@@ -124,6 +124,8 @@ int main() {
 
         char *subdomain = parseHost(client_socket);
 
+        char *fileAddr = format(readSize + 6 + strlen(subdomain), "web/%s/%s\0", subdomain, readAddr);
+
         if (strcasecmp(subdomain, "api") == 0) {
             //TODO Make this less hardcoded if I expand on this
             if (method == POST && strcmp(readAddr, "pushEvent") == 0) {
@@ -152,11 +154,10 @@ int main() {
                     domainTarget = mremap(domainTarget, targetSize, ++targetSize, MREMAP_MAYMOVE);
                 }
                 munmap(subdomain, strlen(subdomain));
+                domainTarget[--targetSize] = '\0';
                 subdomain = domainTarget;
             }
         }
-
-        char *fileAddr = format(readSize + 6 + strlen(subdomain), "web/%s/%s\0", subdomain, readAddr);
 
         print(fileAddr);
 
@@ -190,7 +191,7 @@ int main() {
         print("(200 ");
         print((char *) type);
         print(")\n");
-        char *header = format(strlen(http200) + strlen(type) + strlen(subdomain), http200, type, subdomain);
+        char *header = format(strlen(http200) + strlen(type), http200, type);
         write(client_socket, header, strlen(header));
         free(header);
         exit_code = writeFileToSocket(filePtr, client_socket);
@@ -328,5 +329,6 @@ int writeFileToSocket(int fileFd, int socketFd) {
     }
     write(socketFd, "0\r\n\r\n", 5);
     free(writeBuf);
+    free(readBuf);
     return EXIT_SUCCESS;
 }
