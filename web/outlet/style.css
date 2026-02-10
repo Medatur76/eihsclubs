@@ -198,11 +198,11 @@ div.horizontal {
 }
 
 div.horizontal div {
-    margin-bottom: 1vh;
+    margin-bottom: min(1vh,.5vw);
 }
 
 div.horizontal div:first-child {
-    margin-right: 1vh;
+    margin-right: min(1vh,.5vw);
 }
 
 img.stair_photo {
