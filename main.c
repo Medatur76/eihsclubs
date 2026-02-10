@@ -39,7 +39,6 @@ typedef enum _Method {
 
 int main() {
     int server_fd, client_socket;
-    char *readAddr;
     struct sockaddr_in address;
     int opt = 1;
     int addrlen = sizeof(address);
@@ -101,7 +100,7 @@ int main() {
         }
         while (readBuf[0] != '/') read(client_socket, readBuf, 1);
         size_t readSize = 1;
-        readAddr = mmap(NULL, readSize, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+        char *readAddr = mmap(NULL, readSize, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
         if (readAddr == MAP_FAILED) {
             perror("MAPPING FAIL");
             errclose;

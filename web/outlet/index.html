@@ -118,7 +118,7 @@
             <section id="article">
                 <div class="left article_buttons">
                     <div style="display: grid;justify-content: center;justify-items: center;align-content: space-around;width: 100%;height: 75%;position: absolute;bottom: 15vh;">
-                        <a href="" aria-label="Buy Article">
+                        <a href="#purchase" aria-label="Buy Article">
                             <svg fill="#b80b0b" xmlns="http://www.w3.org/2000/svg" height="13vh" width="100%" viewbox="0 0 83 15">
                                 <path d="m6 0c-8 0-8 15 0 15h70c8 0 8-15 0-15z" />
                                 <text fill="#FFFFFF" font-size="calc(1em/2.5)" font-weight="bold" x="50%" y="55%" text-anchor="middle" dominant-baseline="middle">Buy Article</text>
@@ -138,7 +138,7 @@
                                 <text fill="rgba(255, 255, 255, 1)" font-size="calc(2em/5)" font-weight="semibold" x="50%" y="55%" text-anchor="middle" dominant-baseline="middle" style="letter-spacing: 0.05vw;word-spacing: 0.1vw;">Sources</text>
                             </svg>
                         </a>
-                        <a href="#donate" aria-label="Donate">
+                        <a href="https://docs.google.com/forms/d/e/1FAIpQLSdrL_mBAZXLBR93t8HMP75tgvmaR-rHYhyVN01w6D1p5L9kNQ/viewform" aria-label="Donate">
                             <!--Will replace this with a replace keyword in the actual serverside code-->
                             <svg fill="#FFFFFF" xmlns="http://www.w3.org/2000/svg" height="8vh" width="100%" viewbox="0 0 150 20">
                                 <path d="m3 0c-2 0-3 1-3 3l0 14c0 2 1 3 3 3h144c2 0 3-1 3-3v-14c0-2-1-3-3-3h-144m0 1h144c1.5 0 2 .5 2 2v14c0 1.5-.5 2-2 2h-144c-1.5 0-2-.5-2-2v-14c0-1.5.5-2 2-2z" />
@@ -271,7 +271,7 @@
                     </div>
                 </div>
                 <div class="right text">
-                    <a href="" style="display: block; margin-top: min(8vh,4vw);" aria-label="Click Here to Join!">
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSfoG2zatL9H2fZ-t7AoM0vcve_NiEu2__VHJwu_wyrzuZDnzA/viewform" style="display: block; margin-top: min(8vh,4vw);" aria-label="Click Here to Join!">
                         <svg fill="#FF0000" xmlns="http://www.w3.org/2000/svg" height="8em" width="100%" viewbox="0 0 83 18">
                             <path d="m6 0c-8 0-8 18 0 18h70c8 0 8-18 0-18z" />
                             <text fill="#FFFFFF" font-size="calc(1em/2)" x="50%" y="50%" text-anchor="middle" dominant-baseline="middle">Click Here!</text>
@@ -286,10 +286,10 @@
                             <strong>Photographers:</strong> We tell the story through visuals
                         </p>
                         <p style="text-align: left; text-align-last: center; line-height: 1.2;">
-                            <strong>Editors:</strong> describe (must apply) blah blah blah blah blah
+                            <strong>Editors:</strong> We help with finalizing the articles for others to read
                         </p>
                         <p style="text-align: left; text-align-last: center; line-height: 1.2;">
-                            <strong>Social Media:</strong> e promote and represent the outlets visuals
+                            <strong>Social Media:</strong> We promote and represent the outlets visuals
                         </p>
                         <p style="text-align: left; text-align-last: center; line-height: 1.2;">
                             <strong>Interviewer:</strong> We get firsthand information through interviewing
@@ -399,6 +399,7 @@
         <!--Scroll Icon-->
         <div></div>
         <script id="latestArticleJS" defer>
+            //I need to revise this system to not pull the json and parse it but rather pull the actual images from the api endpoint
             const imgL = document.getElementById("latestArticle").appendChild(document.createElement("img")),
             imgA = document.getElementById("latestAvailable").appendChild(document.createElement("img")),
             imgSs = document.getElementById("otherArticles").children;

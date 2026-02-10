@@ -138,10 +138,11 @@ div.post_container {
     padding: 1vw;
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 
 div.post_container > img {
-    width: 100%;
+    height: 100%;
 }
 
 div.about {
@@ -186,10 +187,6 @@ section#join div.left div#title, section#join div.right p.header, section#contac
 section#join div.left div#title {
     margin-top: 4vh;
     margin-bottom: 1vh;
-}
-
-section#join div.right h5 {
-    font-size: 1vw;
 }
 
 div.horizontal {
