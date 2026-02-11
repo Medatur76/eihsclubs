@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <style>
+            #area, pre {
+                height: 20vh;
+                width: 100vw;
+                position: absolute;
+                top: 0;
+                left: 0;
+                margin: 0;
+                font-family: monospace;
+            }
+            #area {
+                color: transparent;              /* hide text */
+                caret-color: black;              /* keep caret visible */
+                background: transparent;
+                z-index: 2;
+                white-space: pre-wrap;       /* preserves line breaks naturally */
+            }
+
+            #area::selection {
+                background: rgba(0, 120, 215, 0.4); /* normal selection look */
+                color: transparent;
+            }
+
+            pre {
+                z-index: 1;
+                background-color: gray;
+                white-space: pre-wrap;       /* preserves line breaks naturally */
+            }
+            code {
+                display: block;
+                position: inherit;
+                top: inherit;
+                left: inherit;
+            }
+        </style>
+        <link rel="stylesheet" href="./cpp_theme.css">
+    </head>
+    <body>
+        <div contenteditable="true" id="area"></div>
+        <pre aria-hidden="true" inert>
+            <code id="display"></code>
+        </pre>
+        <script>
+            const textarea = document.getElementById("area"), dis = document.getElementById("display");
+            const keywords = [
+                [
+                    'const',
+                    'return'
+                ],
+                [
+                    `\\b(void|int|char)(\\s)?(\\*+)?(?!<\\/span>)`,
+                    `<span class="type">$1$2$3</span>`
+                ]
+            ];
+            const test = 'char** hello int* ptr void c';
+            textarea.oninput = (ev) => {
+                // Escape HTML entities for safety and maintain line breaks
+                let content = textarea.innerText
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+                console.log(content);
+                for (const word of keywords) {
+                    const regex = new RegExp(word[0], 'g'); // ensure words are highlighted only once
+                    content = content.replace(regex, word[1]);
+                }
+                dis.innerHTML = content;
+            };
+        </script>
+    </body>
+</html>
