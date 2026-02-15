@@ -25,7 +25,6 @@ int git_pull();
 //Add cache-control header
 bool isSafePath(char *);
 char *parseHost(int);
-void print(char *);
 char *format(size_t, const char *__restrict, ...);
 const char *get_mime_type(const char *);
 int writeFileToSocket(int, int);
@@ -71,7 +70,7 @@ int main() {
         perror("listen");
         exit(EXIT_FAILURE);
     }
-    print("Listening on port 8080...\n");
+    write(1, "Listening on port 8080...\n", 27);
 
     while (1) {
         client_socket = accept(server_fd, (struct sockaddr *)&address, (socklen_t*)&addrlen);
@@ -93,9 +92,6 @@ int main() {
         Method method = readBuf[0] == 'G' ? GET : readBuf[0] == 'H' ? HEAD : readBuf[0] == 'P' ? POST : UNALLOWED;
         if (method == UNALLOWED) {
             write(client_socket, http405, strlen(http405));
-            print("Unallowed method requested \"");
-            print(readBuf);
-            print("\" (405)\n");
             errclose;
         }
         while (readBuf[0] != '/') read(client_socket, readBuf, 1);
@@ -128,20 +124,13 @@ int main() {
         if (strcasecmp(subdomain, "api") == 0) {
             //TODO Make this less hardcoded if I expand on this
             if (method == POST && strcmp(readAddr, "pushEvent") == 0) {
-                print("POST web/api/pushEvent ((git ");
                 signal(SIGCHLD, SIG_DFL);  // Restore default SIGCHLD handling for git_pull
                 int output = git_pull();
-                size_t size = snprintf(NULL, 0, "%d", output);
-                char *buff = format(size + 2, "%d)", output);
-                print(buff);
-                free(buff);
                 if (output != 0) {
                     write(client_socket, http500, strlen(http500));
-                    print(" 500)\n");
                     exit_code = EXIT_FAILURE;
                 } else {
                     write(client_socket, http202, strlen(http202));
-                    print(" 202)\n");
                 }
                 writeFileToSocket(open("web/api/.hidden/pushEvent", O_RDONLY), client_socket);
                 goto cleanup;
@@ -158,8 +147,6 @@ int main() {
             }
         }
 
-        print(fileAddr);
-
         int filePtr = open(fileAddr, O_RDONLY);
         if (filePtr < 0) {
             if (!fileExt) {
@@ -169,27 +156,18 @@ int main() {
                 filePtr = open(fileAddr, O_RDONLY);
                 if (filePtr < 0) {
                     write(client_socket, http404, strlen(http404));
-                    print("(404)\n");
                     errclose;
                 }
             } else {
                 write(client_socket, http404, strlen(http404));
-                print("(404)\n");
                 errclose;
             }
-            print("(");
-            print(fileAddr);
-            print(" ");
         }
         const char *type = get_mime_type(fileAddr);
         if (type == NULL || !isSafePath(fileAddr)) {
             write(client_socket, http403, strlen(http403));
-            print("(403)\n");
             goto cleanup;
         }
-        print("(200 ");
-        print((char *) type);
-        print(")\n");
         char *header = format(strlen(http200) + strlen(type), http200, type);
         write(client_socket, header, strlen(header));
         free(header);
@@ -236,12 +214,6 @@ bool isSafePath(char *request) {
 
     // Ensure boundary ("/" or end of string)
     return true;
-}
-
-
-void print(char *data) {
-    int len = strlen(data);
-    write(1, data, len);
 }
 
 char *format(size_t maxlen, const char *__restrict format, ...) {
