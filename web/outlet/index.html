@@ -404,16 +404,16 @@
             imgA = document.getElementById("latestAvailable").appendChild(document.createElement("img")),
             imgSs = document.getElementById("otherArticles").children;
             fetch("./api/articles_full.json", { method: "GET" }).then((response) => response.json()).then((json) => {
-                imgL.src = "./img/" + json[0].cover;
+                imgL.src = "./articles/" + json[0].cover;
                 imgL.alt = "Latest magazine's cover";
                 var img;
-                (img = imgSs[0].appendChild(document.createElement("img"))).src = "./img/" + json[1].cover;
+                (img = imgSs[0].appendChild(document.createElement("img"))).src = "./articles/" + json[1].cover;
                 img.alt = "Second latest magazine cover";
-                (img = imgSs[1].appendChild(document.createElement("img"))).src = "./img/" + json[2].cover;
+                (img = imgSs[1].appendChild(document.createElement("img"))).src = "./articles/" + json[2].cover;
                 img.alt = "Third latest magazine cover";
                 for (const article of json) {
                     if (article.available) {
-                        imgA.src = "./img/" + article.cover;
+                        imgA.src = "./articles/" + article.cover;
                         imgA.alt = "Latest purchasable magazine's cover";
                         return;
                     }
