@@ -1,24 +1,7 @@
-#define _GNU_SOURCE
-#include <stdio.h>
-#include <stdbool.h>
-#include <stdint.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/socket.h>
-#include <sys/mman.h>
-#include <stdarg.h>
-#include <netinet/in.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include <signal.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <limits.h>
+#include "server.h"
 
 #define errclose exit_code = EXIT_FAILURE; goto cleanup
 #define writeBufSize 16777216 //16 MB
-
-int git_pull();
 
 //TODO Make this stop from going from one domain to another (e.g. eihsclubs.com/../outlet/index.html)
 //And fix the output in the console (e.g. web/eihsclubs/index(web/eihsclubs/index.html (200 text/html), and overlapped messages)
@@ -27,14 +10,6 @@ bool isSafePath(char *);
 char *parseHost(int);
 char *format(size_t, const char *__restrict, ...);
 const char *get_mime_type(const char *);
-int writeFileToSocket(int, int);
-
-typedef enum _Method {
-    GET,
-    HEAD,
-    POST,
-    UNALLOWED
-} Method;
 
 int main() {
     int server_fd, client_socket;
@@ -42,11 +17,9 @@ int main() {
     int opt = 1;
     int addrlen = sizeof(address);
     char *http200 = "HTTP/1.1 200 OK\r\nContent-Type: %s; charset=UTF-8\r\nTransfer-Encoding: chunked\r\nAccess-Control-Allow-Origin: *\r\n\r\n",
-    *http202 = "HTTP/1.1 202 Accepted\r\nTransfer-Encoding: chunked\r\n\r\n",
     *http404 = "HTTP/1.1 404 Not Found\r\n\r\n404",
     *http403 = "HTTP/1.1 403 Forbidden\r\n\r\n",
-    *http405 = "HTTP/1.1 405 Method Not Allowed\r\nAllow: GET, POST, HEAD\r\n\r\n",
-    *http500 = "HTTP/1.1 500 Internal Server Error\r\nTransfer-Encoding: chunked\r\n\r\n";
+    *http405 = "HTTP/1.1 405 Method Not Allowed\r\nAllow: GET, POST, HEAD\r\n\r\n";
 
     if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0) {
         perror("socket failed");
@@ -121,30 +94,9 @@ int main() {
 
         char *fileAddr = format(readSize + 6 + strlen(subdomain), "web/%s/%s\0", subdomain, readAddr);
 
-        if (strcasecmp(subdomain, "api") == 0) {
-            //TODO Make this less hardcoded if I expand on this
-            if (method == POST && strcmp(readAddr, "pushEvent") == 0) {
-                signal(SIGCHLD, SIG_DFL);  // Restore default SIGCHLD handling for git_pull
-                int output = git_pull();
-                if (output != 0) {
-                    write(client_socket, http500, strlen(http500));
-                    exit_code = EXIT_FAILURE;
-                } else {
-                    write(client_socket, http202, strlen(http202));
-                }
-                writeFileToSocket(open("web/api/.hidden/pushEvent", O_RDONLY), client_socket);
-                goto cleanup;
-            } else if (method == GET) {
-                size_t targetSize = 1;
-                char *domainTarget = mmap(NULL, targetSize, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0), current;
-                while (targetSize <= readSize && (current = readAddr[targetSize-1]) != '/' && current != '\0') {
-                    domainTarget[targetSize-1] = current;
-                    domainTarget = mremap(domainTarget, targetSize, ++targetSize, MREMAP_MAYMOVE);
-                }
-                munmap(subdomain, strlen(subdomain));
-                domainTarget[--targetSize] = '\0';
-                subdomain = domainTarget;
-            }
+        if (!strcasecmp(subdomain, "api")) {
+            exit_code = api_handler(client_socket, method, readAddr, readSize);
+            goto cleanup;
         }
 
         int filePtr = open(fileAddr, O_RDONLY);
