@@ -1,7 +1,31 @@
-#include "server.h"
+#define _GNU_SOURCE
+#include <stdio.h>
+#include <stdbool.h>
+#include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/socket.h>
+#include <sys/mman.h>
+#include <stdarg.h>
+#include <netinet/in.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <signal.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <limits.h>
+
+typedef enum _Method {
+    GET,
+    HEAD,
+    POST,
+    UNALLOWED
+} Method;
 
 #define errclose exit_code = EXIT_FAILURE; goto cleanup
 #define writeBufSize 16777216 //16 MB
+
+int git_pull();
 
 //TODO Make this stop from going from one domain to another (e.g. eihsclubs.com/../outlet/index.html)
 //And fix the output in the console (e.g. web/eihsclubs/index(web/eihsclubs/index.html (200 text/html), and overlapped messages)
@@ -10,6 +34,7 @@ bool isSafePath(char *);
 char *parseHost(int);
 char *format(size_t, const char *__restrict, ...);
 const char *get_mime_type(const char *);
+int writeFileToSocket(int, int);
 
 int main() {
     int server_fd, client_socket;
@@ -92,12 +117,23 @@ int main() {
 
         char *subdomain = parseHost(client_socket);
 
-        char *fileAddr = format(readSize + 6 + strlen(subdomain), "web/%s/%s\0", subdomain, readAddr);
-
         if (!strcasecmp(subdomain, "api")) {
-            exit_code = api_handler(client_socket, method, readAddr, readSize);
-            goto cleanup;
+            //TODO Make this less hardcoded if I expand on this
+            if (method == POST && strcmp(readAddr, "pushEvent") == 0) {
+                signal(SIGCHLD, SIG_DFL);  // Restore default SIGCHLD handling for git_pull
+                int output = git_pull();
+                if (output != 0) {
+                    write(client_socket, "HTTP/1.1 500 Internal Server Error\r\nTransfer-Encoding: chunked\r\n\r\n", 66);
+                    exit_code = EXIT_FAILURE;
+                } else {
+                    write(client_socket, "HTTP/1.1 202 Accepted\r\nTransfer-Encoding: chunked\r\n\r\n", 53);
+                }
+                writeFileToSocket(open("web/api/.hidden/pushEvent", O_RDONLY), client_socket);
+                goto cleanup;
+            }
         }
+
+        char *fileAddr = format(readSize + 6 + strlen(subdomain), "web/%s/%s\0", subdomain, readAddr);
 
         int filePtr = open(fileAddr, O_RDONLY);
         if (filePtr < 0) {
