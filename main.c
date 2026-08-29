@@ -68,6 +68,9 @@ int main() {
         perror("listen");
         exit(EXIT_FAILURE);
     }
+
+    signal(SIGCHLD, SIG_IGN);
+
     write(1, "Listening on port 8080...\n", 27);
 
     while (1) {
@@ -77,13 +80,15 @@ int main() {
             exit(EXIT_FAILURE);
         }
 
-        signal(SIGCHLD, SIG_IGN);
         int process = fork();
         
         if (process < 0) {
             perror("Forking error");
             exit(EXIT_FAILURE);
-        } else if (process != 0) continue;
+        } else if (process != 0) {
+            close(client_socket);
+            continue;
+        }
         int exit_code = EXIT_SUCCESS;
         char *readBuf = malloc(1);
         read(client_socket, readBuf, 1);
@@ -116,6 +121,14 @@ int main() {
         }
 
         char *subdomain = parseHost(client_socket);
+
+        int a = 0;
+        char c;
+        while (a != 4) {
+            if (read(client_socket, &c, 1) != 1) break;
+            if (c == '\n' || c == '\r') a++;
+            else a = 0;
+        }
 
         if (!strcasecmp(subdomain, "api")) {
             //TODO Make this less hardcoded if I expand on this
@@ -216,7 +229,7 @@ char *format(size_t maxlen, const char *__restrict format, ...) {
 }
 
 char *parseHost(int clientFd) {
-    char *readBuf = malloc(1), *testBuf = malloc(5), *output = "eihsclubs";
+    char *readBuf = malloc(1), *testBuf = malloc(5), *output = 0;
     while (read(clientFd, readBuf, 1) == 1) {
         if (readBuf[0] != '\n' && readBuf[0] != '\r') continue;
         read(clientFd, readBuf, 1);
@@ -236,6 +249,10 @@ char *parseHost(int clientFd) {
         }
         output = domainBuf;
         break;
+    }
+    if (!output) {
+        output == mmap(NULL, 9, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+        strcpy(output, "eihsclubs");
     }
     free(readBuf);
     free(testBuf);

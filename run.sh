@@ -19,3 +19,7 @@ cd ..
 ./bin/main
 
 echo -e ""
+
+read -n 1 -s -r -p "Press any ket to continue..."
+
+echo ""
