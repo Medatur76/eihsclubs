@@ -5,24 +5,33 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>The Nexus at EIHS</title>
         <!--meta name="description" content="?"-->
-        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="/style.css">
         <meta property="og:title" content="The Nexus | EIHS">
         <!--meta property="og:description" content="?"-->
-        <!--meta property="og:image" content="https://outlet.eihsclubs.com/img/IMG_2654.webp"-->
+        <!--meta property="og:image" content="https://nexus.eihsclubs.com/"-->
         <meta name="twitter:card" content="summary_large_image">
         <meta property="og:url" content="https://nexus.eihsclubs.com">
     </head>
     <body>
-        <nav>
-            <div class="circle" />
-            <div>Calendar</div>
-            <div>Calendar</div>
-            <div>Calendar</div>
+        <script src="/navbar.js" defer></script>
+        <nav onmouseleave="navExit()">
+            <div class="bar">
+                <div class="nohover circle" style="height: 75%;"></div>
+                <a onmouseenter="navEnter(0)" href="/">Calendar</a>
+                <a onmouseenter="navEnter(1)" href="/">Calendar</a>
+                <a onmouseenter="navEnter(2)" href="/">Calendar</a>
+            </div>
+            <div class="content">
+                <div style="padding-top: 4vh;" />
+                HELLO WORLD<br />
+                HELLO WORLD<br />
+                HELLO WORLD<br />
+                HELLO WORLD<br />
+                HELLO WORLD<br />
+            </div>
         </nav>
-        <div class="scrollContainer">
-            <section>
-                <div class="circle center">Logo</div>
-            </section>
-        </div>
+        <section style="background-color: aqua;display: flex;flex-wrap: wrap;justify-content: center;align-content: center;height: 86vh;">
+            <div class="circle" style="width: 40%;display: flex;justify-content: center;align-items: center;background-color: #474f99;">Logo</div>
+        </section>
     </body>
 </html>
