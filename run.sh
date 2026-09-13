@@ -10,13 +10,13 @@ as auto_update.asm -o ./bin/git_update.o
 
 cd bin
 
-gcc main.o git_update.o -o main
+gcc main.o git_update.o -o eihsclubs
 
-chmod +x ./main
+chmod +x ./eihsclubs
 
 cd ..
 
-./bin/main
+./bin/eihsclubs
 
 echo -e ""
 
