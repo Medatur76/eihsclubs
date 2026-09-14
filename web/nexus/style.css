@@ -17,10 +17,6 @@ body {
         top: 0;
         overflow: hidden;
     }
-    &:has(nav.hovering) > section {
-        filter: blur(15px);
-        pointer-events: none;
-    }
 }
 nav {
     background-color: white;
@@ -42,25 +38,6 @@ nav {
             text-decoration: none;
             color: inherit;
         }
-    }
-    & > .content {
-        background-color: white;
-        position: absolute;
-        top: 3vh;
-        left: 0;
-        width: 92%;
-        padding: 0 4vw;
-        max-height: 0vh;
-        color: rgba(0, 0, 0, 0);
-        transition:
-            max-height 1s ease-in-out,
-            color 2s ease;
-        overflow: hidden;
-        z-index: 2;
-    }
-    &.hovering > .content {
-        max-height: 97vh;
-        color: rgb(0, 0, 0);
     }
 }
 .circle {
