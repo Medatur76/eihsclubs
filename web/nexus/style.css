@@ -10,12 +10,18 @@ body {
         transition-property: filter;
         transition-duration: 2s;
         width: 100vw;
-        height: 100vh;
+        height: 70vh;
         margin: 0; padding: 0;
         scroll-snap-align: start;
         position: relative;
         top: 0;
         overflow: hidden;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-content: center;
+        gap: 4vw;
     }
 }
 nav {
@@ -31,12 +37,23 @@ nav {
         flex-wrap: wrap;
         align-content: center;
         align-items: center;
-        height: 2vh;
+        justify-content: space-between;
+        height: 4vh;
         width: 98%;
         padding: .5vh 1vw;
-        & > a {
-            text-decoration: none;
-            color: inherit;
+        & > .right {
+            display: flex;
+            gap: 2vw;
+            flex-direction: row;
+            align-content: center;
+            align-items: center;
+            flex: fit-content;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            & > a {
+                text-decoration: none;
+                color: inherit;
+            }
         }
     }
 }
@@ -44,4 +61,21 @@ nav {
     background-color: rgb(27, 27, 27);
     border-radius: 50%;
     aspect-ratio: 1;
+    width: fit-content;
+}
+.button {
+    border-radius: 12px;
+    padding: calc(1% / 20);
+    place-items: center;
+    display: flex;
+}
+.row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.column {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
 }
